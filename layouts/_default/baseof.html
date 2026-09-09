@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
 </head>
 <body>
+    {{- partial "antpress/header.html" . }}
+
     {{/* Hook: 项目级 partials/custom_head.html（如字体预加载 / 统计脚本） */}}
     {{- if templates.Exists "partials/custom_head.html" }}
     {{- partial "custom_head.html" . }}
