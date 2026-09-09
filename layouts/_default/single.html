@@ -34,24 +34,7 @@
         </p>
         {{- end }}
 
-        {{- $prev := .PrevInSection }}
-        {{- $next := .NextInSection }}
-        {{- if or $prev $next }}
-        <nav class="post-nav">
-            <div class="post-nav-prev">
-                {{- with $prev }}
-                <a href="{{ .Permalink }}">← 上一篇 · {{ .Title }}</a>
-                {{- end }}
-            </div>
-            <div class="post-nav-next">
-                {{- with $next }}
-                <a href="{{ .Permalink }}">{{ .Title }} · 下一篇 →</a>
-                {{- end }}
-            </div>
-        </nav>
-        {{- end }}
-
-        {{/* Hook: 项目级可定义 partials/antpress/post-extend.html（如 Twikoo 评论） */}}
+        {{/* Hook: 项目级可定义 partials/antpress/post-extend.html（如 Twikoo 评论 / Sponsor 等） */}}
         {{- if templates.Exists "partials/antpress/post-extend.html" }}
         {{- partial "antpress/post-extend.html" . }}
         {{- end }}

@@ -71,6 +71,11 @@
         主题 <a href="https://github.com/leon/antpress" target="_blank" rel="noopener">antpress</a>，借鉴自 <a href="https://antfu.me" target="_blank" rel="noopener">antfu.me</a> 的复古打字风。
     </p>
 
+    {{/* Hook: 项目级可定义 partials/antpress/hero-extend.html（Friends / Sponsor / 版权等） */}}
+    {{- if templates.Exists "partials/antpress/hero-extend.html" }}
+    {{- partial "antpress/hero-extend.html" . }}
+    {{- end}}
+
 </div>
 
 {{ end }}
