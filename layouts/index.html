@@ -1,0 +1,77 @@
+{{ define "main" }}
+
+<!-- 顶部一行 -->
+{{- partial "header.html" . }}
+
+<div class="home-main">
+
+    <!-- 大字姓名 + 副标题 + bio -->
+    <h1 class="hero-name">{{ .Site.Title }}</h1>
+    <p class="hero-tagline">{{ .Site.Params.description | default "Personal site" }}</p>
+
+    <p class="hero-bio">
+        开发者，折腾 Hugo / 自托管。
+        喜欢 <a href="#about">写字</a>、<a href="{{ "library/" | relURL }}">阅读</a>、<a href="#about">音乐</a>。
+    </p>
+
+    <!-- antfu 风的 Working/Creator/Core/Maintaining 分组行 -->
+    <p class="hero-bio">
+        <span class="hero-bio-label">Working at</span>
+        <a href="#">Hugo</a>
+    </p>
+    <p class="hero-bio">
+        <span class="hero-bio-label">Writing about</span>
+        <a href="#">web</a>, <a href="#">tools</a>, <a href="#">design</a>
+    </p>
+    <p class="hero-bio">
+        <span class="hero-bio-label">Reading</span>
+        <a href="#">essays</a>, <a href="#">fiction</a>, <a href="#">philosophy</a>
+    </p>
+    <p class="hero-bio">
+        <span class="hero-bio-label">Listening to</span>
+        <a href="#">post-rock</a>, <a href="#">ambient</a>, <a href="#">jazz</a>
+    </p>
+
+    <p class="hero-paragraph">
+        这里记下我感兴趣的东西：技术、工具、设计、阅读、写作。
+        大部分是自言自语，偶尔是分享给朋友。
+    </p>
+
+    <!-- 次级 tab 导航（antfu 风） -->
+    <nav class="sub-tabs">
+        <a class="current">Blog</a>
+        <a>Talks</a>
+        <a>Podcasts</a>
+        <a>Streams</a>
+        <a>Notes</a>
+    </nav>
+
+    <!-- 年份分组（水印 + 文章列表） -->
+    {{- $posts := where .Site.RegularPages "Type" "posts" }}
+    {{- range $posts.GroupByDate "2006" }}
+    <h2 class="archive-year">{{ .Key }}</h2>
+    <ul class="archive-list">
+        {{- range .Pages }}
+        <li>
+            <a class="archive-title" href="{{ .Permalink }}">
+                {{ .Title }}
+            </a>
+            <span class="archive-meta">
+                {{ .Date.Format "Jan 2" }} ·
+                {{ if gt .ReadingTime 0 }}{{ .ReadingTime }}min{{ else }}1min{{ end }}
+            </span>
+        </li>
+        {{- end }}
+    </ul>
+    {{- end }}
+
+    <hr class="stars">
+
+    <p class="hero-paragraph" id="about">
+        这里是一个用 Hugo 搭建的个人博客。
+        主题 <a href="https://github.com/leon/antpress" target="_blank" rel="noopener">antpress</a>，借鉴自 <a href="https://antfu.me" target="_blank" rel="noopener">antfu.me</a> 的复古打字风。
+    </p>
+
+</div>
+
+{{ end }}

@@ -1,0 +1,22 @@
+<footer class="site-footer">
+    {{- with .Site.Params.footerNote }}
+    <p>{{ . | safeHTML }}</p>
+    {{- end }}
+    <p>
+        &copy; {{ now.Format "2006" }} {{ .Site.Title }} &middot;
+        Powered by <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+        Theme <a href="https://github.com/leon/antpress" target="_blank" rel="noopener">antpress</a>
+    </p>
+</footer>
+
+<!-- 滚动到顶部按钮 -->
+<button class="to-top" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+        <path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/>
+    </svg>
+</button>
+
+{{ $plum := resources.Get "js/plum.js" | resources.Minify }}
+<script src="{{ $plum.Permalink }}" defer></script>
+{{ $theme := resources.Get "js/theme.js" | resources.Minify }}
+<script src="{{ $theme.Permalink }}" defer></script>
