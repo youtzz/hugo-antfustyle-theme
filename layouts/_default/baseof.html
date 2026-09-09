@@ -20,8 +20,18 @@
     <link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
 </head>
 <body>
+    {{/* Hook: 项目级 partials/custom_head.html（如字体预加载 / 统计脚本） */}}
+    {{- if templates.Exists "partials/custom_head.html" }}
+    {{- partial "custom_head.html" . }}
+    {{- end }}
+
     {{- block "main" . }}{{ end }}
 
-    {{- partial "footer.html" . }}
+    {{- partial "antpress/footer.html" . }}
+
+    {{/* Hook: 项目级 partials/custom_body.html（如 copy code / fancybox / Twikoo 加载器） */}}
+    {{- if templates.Exists "partials/custom_body.html" }}
+    {{- partial "custom_body.html" . }}
+    {{- end }}
 </body>
 </html>

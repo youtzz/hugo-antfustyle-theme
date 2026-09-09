@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-{{- partial "header.html" . }}
+{{- partial "antpress/header.html" . }}
 
 <main class="page-main">
     <article class="post">
@@ -50,6 +50,11 @@
                 {{- end }}
             </div>
         </nav>
+        {{- end }}
+
+        {{/* Hook: 项目级可定义 partials/antpress/post-extend.html（如 Twikoo 评论） */}}
+        {{- if templates.Exists "partials/antpress/post-extend.html" }}
+        {{- partial "antpress/post-extend.html" . }}
         {{- end }}
     </article>
 </main>
