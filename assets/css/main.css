@@ -210,18 +210,11 @@ hr.stars::after {
     font-size: .72rem;
     letter-spacing: .28em;
     color: var(--text-mute);
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity .55s ease .1s, transform .55s ease .1s;
+    opacity: .35;
+    transform: translateY(2px);
+    transition: opacity .55s ease .1s, transform .55s ease .1s, color .3s ease;
 }
-.nianhua.is-blooming .nianhua-bud { opacity: 0; }
-.nianhua.is-blooming .nianhua-petal {
-    opacity: 1;
-    transform: scale(1);
-}
-.nianhua.is-blooming .petal-l { transition-delay: .05s; }
-.nianhua.is-blooming .petal-r { transition-delay: .1s; }
-.nianhua.is-blooming .petal-c { transition-delay: 0s; }
+.nianhua:hover .nianhua-text { opacity: .7; }
 .nianhua.is-smiling .nianhua-smile { opacity: .9; }
 .nianhua.is-smiling .nianhua-text {
     opacity: .95;
