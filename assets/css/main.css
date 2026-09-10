@@ -476,7 +476,7 @@ hr.stars::after {
 .site-footer {
     max-width: 720px;
     margin: 4rem auto 0;
-    padding: 2rem 1.5rem 3rem;
+    padding: 2rem 1.5rem 4.5rem;
     color: var(--text-mute);
     font-size: .85em;
     text-align: center;
