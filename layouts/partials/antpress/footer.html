@@ -18,7 +18,17 @@
     </svg>
 </button>
 
+{{- $decoration := .Site.Params.decoration | default "plum" -}}
+{{- if eq $decoration "lotus" }}
+{{ $lotus := resources.Get "js/lotus.js" | resources.Minify }}
+<script src="{{ $lotus.RelPermalink }}" defer></script>
+{{- else if and $decoration (ne $decoration "none") }}
 {{ $plum := resources.Get "js/plum.js" | resources.Minify }}
 <script src="{{ $plum.RelPermalink }}" defer></script>
+{{- end }}
+{{- if .Site.Params.nianhua }}
+{{ $nianhua := resources.Get "js/nianhua.js" | resources.Minify }}
+<script src="{{ $nianhua.RelPermalink }}" defer></script>
+{{- end }}
 {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
 <script src="{{ $theme.RelPermalink }}" defer></script>

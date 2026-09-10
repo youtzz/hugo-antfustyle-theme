@@ -9,6 +9,11 @@ theme = "antpress"
   homeAbout = "这个示例展示 antpress 的首页配置与文章排版。"
   homeRecentTitle = "最近文章"
   homeAllPostsLabel = "查看全部文章"
+  # 页面装饰：plum（默认）| lotus | none
+  decoration = "lotus"
+  # 左下角「拈花微笑」互动
+  nianhua = true
+  nianhuaText = "拈花一笑"
 
   [[params.homeGroups]]
     label = "Writing about"

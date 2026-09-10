@@ -139,7 +139,7 @@ hr.stars::after {
 }
 
 /* ============================
- * 左侧装饰（antfu ArtPlum canvas）
+ * 页面装饰（ArtPlum / Lotus canvas）
  * ============================ */
 .page-decoration {
     position: fixed;
@@ -152,7 +152,83 @@ hr.stars::after {
     mask-image: radial-gradient(circle, transparent, black);
     -webkit-mask-image: radial-gradient(circle, transparent, black);
 }
+.page-decoration[data-decoration="lotus"] {
+    /* 莲从两侧生长，中间留白给正文 */
+    mask-image: linear-gradient(90deg, black 0%, transparent 28%, transparent 72%, black 100%);
+    -webkit-mask-image: linear-gradient(90deg, black 0%, transparent 28%, transparent 72%, black 100%);
+}
 .page-decoration canvas { display: block; width: 100%; height: 100%; }
+
+/* ============================
+ * 拈花微笑（互动点缀）
+ * ============================ */
+.nianhua {
+    position: fixed;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+    margin: 0;
+    padding: .4rem .5rem;
+    border: 0;
+    background: transparent;
+    color: var(--text-mute);
+    cursor: pointer;
+    opacity: .55;
+    transition: opacity .3s ease, color .3s ease;
+}
+.nianhua:hover,
+.nianhua:focus-visible,
+.nianhua.is-blooming {
+    opacity: .95;
+    color: var(--text);
+}
+.nianhua-mark {
+    width: 3rem;
+    height: 3.75rem;
+    display: block;
+}
+.nianhua-bud {
+    opacity: 1;
+    transition: opacity .4s ease;
+}
+.nianhua-petal {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    transform: scale(0.35);
+    transition: opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.nianhua-smile {
+    opacity: 0;
+    transition: opacity .6s ease .2s;
+}
+.nianhua-text {
+    font-size: .7rem;
+    letter-spacing: .35em;
+    color: var(--text-mute);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .6s ease, transform .6s ease;
+    writing-mode: horizontal-tb;
+}
+.nianhua.is-blooming .nianhua-bud { opacity: 0; }
+.nianhua.is-blooming .nianhua-petal {
+    opacity: 1;
+    transform: scale(1);
+}
+.nianhua.is-smiling .nianhua-smile { opacity: .85; }
+.nianhua.is-smiling .nianhua-text {
+    opacity: .9;
+    transform: translateY(0);
+}
+@media (max-width: 640px) {
+    .nianhua { left: .75rem; bottom: .75rem; opacity: .4; }
+    .nianhua-mark { width: 2.5rem; height: 3.1rem; }
+}
 .page-main,
 .home-main {
     position: relative;
@@ -538,6 +614,11 @@ hr.stars::after {
         animation-iteration-count: 1 !important;
     }
     .page-decoration { display: none; }
+    .nianhua { opacity: .85; }
+    .nianhua .nianhua-petal { opacity: 1; transform: none; }
+    .nianhua .nianhua-bud { opacity: 0; }
+    .nianhua .nianhua-smile,
+    .nianhua .nianhua-text { opacity: .85; transform: none; }
 }
 
 /* ============================
@@ -553,6 +634,7 @@ hr.stars::after {
     }
     body { font-size: 11pt; line-height: 1.55; }
     .page-decoration,
+    .nianhua,
     .hero-row,
     .site-footer,
     .post-tags,

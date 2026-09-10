@@ -10,7 +10,8 @@
 - **Typewriter 字体**：纯系统字体 fallback（JetBrains Mono → IBM Plex Mono → SF Mono → Menlo），无外部 CDN 依赖
 - **印刷感配色**：off-white `#FAFAF7` 纸面 + 深炭 `#1A1A1A` 文字 + 链接继承文字色（无蓝色强调）
 - **自动暗色**：`prefers-color-scheme` + 手动 sun/moon 切换 + localStorage 持久化
-- **ArtPlum canvas 装饰**：移植自 antfu.me 真实的 `ArtPlum.vue` L-system 算法，每次访问随机生成羽毛/枝叶装饰
+- **页面装饰**：`plum`（ArtPlum L-system 枝叶）或 `lotus`（莲花生长：茎 → 叶 → 花），可关闭
+- **拈花微笑**：可选左下角线稿互动——点击莲蕾绽放，淡出「拈花一笑」
 - **手绘 `af` logo**：使用 antfu.me 真实 SVG path
 - **星号行 `* * *`**：标志性 antfu 风格分节符号
 - **打印 stylesheet**：自动隐藏导航 / 评论 / 页脚，外链附带 URL
@@ -44,6 +45,12 @@ git submodule add https://github.com/youtzz/hugo-antpress-theme.git themes/antpr
   homeRecentCount = 8
   homeRecentTitle = "最近文章"
   homeAllPostsLabel = "查看全部文章"
+
+  # 页面装饰：plum（默认）| lotus | none
+  decoration = "lotus"
+  # 拈花微笑互动（布尔）；文案可改
+  nianhua = true
+  nianhuaText = "拈花一笑"
 
   [[params.homeGroups]]
     label = "Writing about"
@@ -88,6 +95,8 @@ antpress/
 │   │   └── main.css          # 主样式（typewriter + 暗色 + print）
 │   └── js/
 │       ├── plum.js           # ArtPlum canvas 算法
+│       ├── lotus.js          # 莲花生长装饰
+│       ├── nianhua.js        # 拈花微笑互动
 │       └── theme.js          # 暗色切换 + 中文标签
 ├── layouts/
 │   ├── _default/
