@@ -68,6 +68,11 @@ a:hover, a:focus {
     text-decoration: underline;
     text-underline-offset: 3px;
 }
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
 
 /* ============================
  * 标题
@@ -299,24 +304,15 @@ hr.stars::after {
     max-width: 600px;
 }
 
-/* ============================
- * 次级 tab 导航
- * ============================ */
-.sub-tabs {
-    display: flex;
-    gap: 1.5rem;
-    margin: 2em 0 1em;
-    font-size: .95rem;
-}
-.sub-tabs a {
+.home-list-title {
+    margin: 3rem 0 0;
     color: var(--text-mute);
-    transition: color .15s;
-}
-.sub-tabs a.current {
-    color: var(--text);
+    font-size: 1rem;
     font-weight: 600;
 }
-.sub-tabs a:hover { color: var(--text); }
+.all-posts-link {
+    margin-top: 2rem;
+}
 
 /* ============================
  * 年份水印
@@ -325,7 +321,7 @@ hr.stars::after {
     font-size: 10rem;
     line-height: 1;
     font-weight: 700;
-    margin: 2em 0 -.1em;
+    margin: .65em 0 -.1em;
     color: var(--text-mute);
     opacity: .15;
     letter-spacing: -.03em;
@@ -394,7 +390,44 @@ hr.stars::after {
     line-height: 1.75;
     font-size: 1rem;
 }
-.post-body img { max-width: 100%; height: auto; border-radius: 4px; }
+.post-body h2,
+.post-body h3,
+.post-body h4 { scroll-margin-top: 1.5rem; }
+.post-body ul,
+.post-body ol { padding-left: 1.6em; }
+.post-body li { margin: .35em 0; }
+.post-body li::marker { color: var(--text-mute); }
+.post-body a { text-decoration: underline; text-underline-offset: 3px; }
+.post-body img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em auto;
+    border-radius: 4px;
+}
+.post-body table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: 1.5em 0;
+    border-collapse: collapse;
+    overflow-x: auto;
+}
+.post-body th,
+.post-body td {
+    padding: .5em .75em;
+    border: 1px solid var(--border);
+    text-align: left;
+}
+.post-body th { background: var(--code-bg); }
+.post-body blockquote > :last-child { margin-bottom: 0; }
+.post-body .footnotes {
+    margin-top: 2.5em;
+    color: var(--text-mute);
+    font-size: .9em;
+}
+.post-body .footnotes hr { margin-bottom: 1.5em; }
+.post-body .footnote-backref { margin-left: .25em; }
 .post-body figure { margin: 1.5em 0; }
 .post-body figcaption {
     color: var(--text-mute);
@@ -408,22 +441,6 @@ hr.stars::after {
 }
 .post-tags a { color: var(--text-mute); }
 .post-tags a:hover { color: var(--text); }
-
-/* 上一篇 / 下一篇 */
-.post-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 1em;
-    margin: 2em 0;
-    padding: 1em 0;
-    border-top: 1px solid var(--border);
-    font-size: .9em;
-    flex-wrap: wrap;
-}
-.post-nav a { color: var(--text-mute); }
-.post-nav a:hover { color: var(--text); }
-.post-nav-prev, .post-nav-next { flex: 1; min-width: 0; }
-.post-nav-next { text-align: right; }
 
 /* ============================
  * 页脚
@@ -483,6 +500,18 @@ hr.stars::after {
     .archive-year { font-size: 6rem; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+    .page-decoration { display: none; }
+}
+
 /* ============================
  * 打印样式
  * ============================ */
@@ -498,7 +527,6 @@ hr.stars::after {
     .page-decoration,
     .hero-row,
     .site-footer,
-    .post-nav,
     .post-tags,
     .to-top { display: none !important; }
     .page-main, .home-main, .post { max-width: 100%; padding: 0; }

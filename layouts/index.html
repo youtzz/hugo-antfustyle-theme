@@ -1,58 +1,39 @@
 {{ define "main" }}
 
-<!-- 顶部一行 -->
-
 <div class="home-main">
-
-    <!-- 大字姓名 + 副标题 + bio -->
     <h1 class="hero-name">{{ .Site.Title }}</h1>
     <p class="hero-tagline">{{ .Site.Params.description | default "Personal site" }}</p>
 
+    {{- with .Site.Params.homeintro }}
     <p class="hero-bio">
-        开发者，折腾 Hugo / 自托管。
-        喜欢 <a href="#about">写字</a>、<a href="{{ "library/" | relURL }}">阅读</a>、<a href="#about">音乐</a>。
+        {{ . | markdownify }}
     </p>
+    {{- end }}
 
-    <!-- antfu 风的 Working/Creator/Core/Maintaining 分组行 -->
+    {{- range .Site.Params.homegroups }}
     <p class="hero-bio">
-        <span class="hero-bio-label">Working at</span>
-        <a href="#">Hugo</a>
+        <span class="hero-bio-label">{{ .label }}</span>
+        {{- range $index, $item := .items }}{{ if $index }}, {{ end }}{{ with $item.url }}<a href="{{ . }}">{{ $item.name }}</a>{{ else }}{{ $item.name }}{{ end }}{{- end }}
     </p>
-    <p class="hero-bio">
-        <span class="hero-bio-label">Writing about</span>
-        <a href="#">web</a>, <a href="#">tools</a>, <a href="#">design</a>
-    </p>
-    <p class="hero-bio">
-        <span class="hero-bio-label">Reading</span>
-        <a href="#">essays</a>, <a href="#">fiction</a>, <a href="#">philosophy</a>
-    </p>
-    <p class="hero-bio">
-        <span class="hero-bio-label">Listening to</span>
-        <a href="#">post-rock</a>, <a href="#">ambient</a>, <a href="#">jazz</a>
-    </p>
+    {{- end }}
 
+    {{- with .Site.Params.homeabout }}
     <p class="hero-paragraph">
-        这里记下我感兴趣的东西：技术、工具、设计、阅读、写作。
-        大部分是自言自语，偶尔是分享给朋友。
+        {{ . | markdownify }}
     </p>
+    {{- end }}
 
-    <!-- 次级 tab 导航（antfu 风） -->
-    <nav class="sub-tabs">
-        <a class="current">Blog</a>
-        <a>Talks</a>
-        <a>Podcasts</a>
-        <a>Streams</a>
-        <a>Notes</a>
-    </nav>
-
-    <!-- 年份分组（水印 + 文章列表） -->
     {{- $posts := where .Site.RegularPages "Type" "posts" }}
-    {{- range $posts.GroupByDate "2006" }}
+    {{- $recentCount := .Site.Params.homerecentcount | default 8 }}
+    {{- $recentPosts := first $recentCount $posts.ByDate.Reverse }}
+    {{- with $recentPosts }}
+    <h2 class="home-list-title">{{ $.Site.Params.homerecenttitle | default "Recent posts" }}</h2>
+    {{- range .GroupByDate "2006" }}
     <h2 class="archive-year">{{ .Key }}</h2>
     <ul class="archive-list">
         {{- range .Pages }}
         <li>
-            <a class="archive-title" href="{{ .Permalink }}">
+            <a class="archive-title" href="{{ .RelPermalink }}">
                 {{ .Title }}
             </a>
             <span class="archive-meta">
@@ -64,12 +45,10 @@
     </ul>
     {{- end }}
 
-    <hr class="stars">
+    <p class="all-posts-link"><a href="{{ "posts/" | relURL }}">{{ $.Site.Params.homeallpostslabel | default "View all posts" }} →</a></p>
+    {{- end }}
 
-    <p class="hero-paragraph" id="about">
-        这里是一个用 Hugo 搭建的个人博客。
-        主题 <a href="https://github.com/leon/antpress" target="_blank" rel="noopener">antpress</a>，借鉴自 <a href="https://antfu.me" target="_blank" rel="noopener">antfu.me</a> 的复古打字风。
-    </p>
+    <hr class="stars">
 
     {{/* Hook: 项目级可定义 partials/antpress/hero-extend.html（Friends / Sponsor / 版权等） */}}
     {{- if templates.Exists "partials/antpress/hero-extend.html" }}

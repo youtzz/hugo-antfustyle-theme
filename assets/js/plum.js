@@ -6,6 +6,8 @@
 (function () {
   'use strict';
 
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
   var canvas = document.getElementById('plum-canvas');
   if (!canvas) return;
   var ctx = canvas.getContext('2d');

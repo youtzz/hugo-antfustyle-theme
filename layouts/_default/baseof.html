@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode | default "zh-CN" }}">
+<html lang="{{ .Site.Language.Locale | default "zh-CN" }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +8,20 @@
     <meta name="description" content="{{ . }}">
     {{- end }}
     {{- range .AlternativeOutputFormats -}}
-    {{ printf `<link rel="%s" type="%s+%s" href="%s" title="%s" />` .Rel .MediaType.Type .MediaType.FirstSuffix .Permalink $.Site.Title | safeHTML }}
+    {{ printf `<link rel="%s" type="%s+%s" href="%s" title="%s" />` .Rel .MediaType.Type .MediaType.FirstSuffix .RelPermalink $.Site.Title | safeHTML }}
     {{ end -}}
     {{- with .Site.Params.favicon }}
     <link rel="icon" href="{{ . }}">
     {{- end }}
     {{- with .OutputFormats.Get "RSS" }}
-    <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
+    <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $.Site.Title }}">
     {{- end }}
     {{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+    {{- with resources.Get "custom.css" }}
+    {{- $customCSS := . | resources.ExecuteAsTemplate "css/custom.css" $ | resources.Minify | resources.Fingerprint }}
+    <link rel="stylesheet" href="{{ $customCSS.RelPermalink }}" integrity="{{ $customCSS.Data.Integrity }}" crossorigin="anonymous">
+    {{- end }}
 </head>
 <body>
     {{- partial "antpress/header.html" . }}

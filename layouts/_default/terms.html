@@ -10,7 +10,7 @@
     <ul class="archive-list">
         {{- range .Pages.ByDate.Reverse }}
         <li>
-            <a class="archive-title" href="{{ .Permalink }}">
+            <a class="archive-title" href="{{ .RelPermalink }}">
                 {{ .Title }}
             </a>
             <span class="archive-meta">

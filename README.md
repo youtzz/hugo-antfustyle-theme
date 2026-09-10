@@ -6,7 +6,7 @@
 
 ## 特性
 
-- **纯文本紧凑列表**：首页按年份分组（年份作为大水印字），每条文章以「标题 + 日期 · 阅读时长 · 中文/English 标签」展示
+- **纯文本紧凑列表**：首页展示最近文章，文章归档按年份分组（年份作为大水印字）
 - **Typewriter 字体**：纯系统字体 fallback（JetBrains Mono → IBM Plex Mono → SF Mono → Menlo），无外部 CDN 依赖
 - **印刷感配色**：off-white `#FAFAF7` 纸面 + 深炭 `#1A1A1A` 文字 + 链接继承文字色（无蓝色强调）
 - **自动暗色**：`prefers-color-scheme` + 手动 sun/moon 切换 + localStorage 持久化
@@ -20,7 +20,7 @@
 ```bash
 # 作为 Hugo 站点的主题使用
 cd /path/to/your-hugo-site/themes
-git clone https://github.com/leon/antpress.git antpress
+git clone https://github.com/youtzz/hugo-antpress-theme.git antpress
 
 # 在 hugo.toml 中启用
 echo 'theme = "antpress"' >> hugo.toml
@@ -29,7 +29,7 @@ echo 'theme = "antpress"' >> hugo.toml
 或者作为 git submodule：
 
 ```bash
-git submodule add https://github.com/leon/antpress.git themes/antpress
+git submodule add https://github.com/youtzz/hugo-antpress-theme.git themes/antpress
 ```
 
 ## 配置
@@ -39,16 +39,41 @@ git submodule add https://github.com/leon/antpress.git themes/antpress
 ```toml
 [params]
   description = "你的站点副标题"
+  homeIntro = "一段支持 **Markdown** 的首页介绍"
+  homeAbout = "一段更完整的自我介绍"
+  homeRecentCount = 8
+  homeRecentTitle = "最近文章"
+  homeAllPostsLabel = "查看全部文章"
+
+  [[params.homeGroups]]
+    label = "Writing about"
+    [[params.homeGroups.items]]
+      name = "Web"
+      url = "/tags/web/"
+    [[params.homeGroups.items]]
+      name = "Design"
 ```
 
-`theme-config.toml` 后台配置项（如果有）：
-- `footerNote`：页脚附加文本（可选）
+`homeGroups.items.url` 可省略；没有链接的项目会渲染为普通文本，不会生成假链接。`footerNote` 可用于页脚附加文本。
 
-## 自定义 hero 内容
+## 项目级扩展
 
-hero 大字姓名取自 `site.Title`。副标题取自 `site.Params.description`。
+主题提供以下可选扩展点：
 
-hero 区下方的「开发者 / Working at / Writing about / Reading / Listening to」分组行在 `layouts/index.html` 中硬编码——直接编辑该文件修改你自己的内容。
+- `layouts/partials/custom_head.html`：`head` 相关扩展
+- `layouts/partials/custom_body.html`：页面底部脚本
+- `layouts/partials/antpress/hero-extend.html`：首页补充内容
+- `layouts/partials/antpress/post-extend.html`：文章页补充内容
+- `layouts/partials/antpress/footer-extend.html`：页脚补充内容
+- `assets/custom.css`：项目样式；支持 Hugo template 表达式，主题会压缩并生成指纹
+
+## 本地验证
+
+仓库内置最小示例站点。在主题仓库根目录运行：
+
+```bash
+hugo --source exampleSite --themesDir ../..
+```
 
 ## 文件结构
 
@@ -70,12 +95,12 @@ antpress/
 │   │   ├── list.html         # 列表页（年份水印 + 紧凑列表）
 │   │   ├── single.html       # 文章详情
 │   │   └── terms.html        # 标签 / 分类
-│   ├── partials/
+│   ├── partials/antpress/
 │   │   ├── header.html       # 顶部一行（logo + nav + social）
 │   │   └── footer.html       # 页脚 + JS 加载
-│   ├── index.html            # 首页 antfu /posts 风格
+│   ├── index.html            # 首页简介 + 最近文章
 │   └── 404.html              # 错误页
-└── static/                   # 静态资源（如截图）
+└── exampleSite/              # 最小可构建示例
 ```
 
 ## 致谢

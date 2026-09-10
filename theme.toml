@@ -1,8 +1,8 @@
 name = "antpress"
 license = "MIT"
-licenselink = "https://github.com/leon/antpress/blob/main/LICENSE"
+licenselink = "https://github.com/youtzz/hugo-antpress-theme/blob/main/LICENSE"
 description = "A Hugo theme inspired by antfu.me — typewriter typography, year-grouped post lists, and a print-like aesthetic."
-homepage = "https://github.com/leon/antpress"
+homepage = "https://github.com/youtzz/hugo-antpress-theme"
 tags = ["blog", "minimal", "personal", "responsive", "dark", "typewriter"]
 features = ["year-grouped post lists", "typewriter typography", "print stylesheet", "auto dark mode with manual toggle", "CJK language tags", "ArtPlum canvas decoration"]
 min_version = "0.161.1"
