@@ -170,64 +170,67 @@ hr.stars::after {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .35rem;
+    gap: .4rem;
     margin: 0;
-    padding: .4rem .5rem;
+    padding: .5rem .55rem;
     border: 0;
     background: transparent;
     color: var(--text-mute);
     cursor: pointer;
-    opacity: .55;
+    opacity: .72;
     transition: opacity .3s ease, color .3s ease;
 }
 .nianhua:hover,
 .nianhua:focus-visible,
 .nianhua.is-blooming {
-    opacity: .95;
+    opacity: 1;
     color: var(--text);
 }
 .nianhua-mark {
-    width: 3rem;
-    height: 3.75rem;
+    width: 3.4rem;
+    height: 4.5rem;
     display: block;
 }
 .nianhua-bud {
     opacity: 1;
-    transition: opacity .4s ease;
+    transition: opacity .35s ease;
 }
 .nianhua-petal {
     opacity: 0;
     transform-box: fill-box;
     transform-origin: center bottom;
-    transform: scale(0.35);
-    transition: opacity .5s ease, transform .7s cubic-bezier(.2,.8,.2,1);
+    transform: scale(0.2);
+    transition: opacity .45s ease, transform .75s cubic-bezier(.2,.85,.2,1);
 }
 .nianhua-smile {
     opacity: 0;
-    transition: opacity .6s ease .2s;
+    transition: opacity .55s ease .15s;
 }
 .nianhua-text {
-    font-size: .7rem;
-    letter-spacing: .35em;
+    font-size: .72rem;
+    letter-spacing: .28em;
     color: var(--text-mute);
     opacity: 0;
-    transform: translateY(4px);
-    transition: opacity .6s ease, transform .6s ease;
-    writing-mode: horizontal-tb;
+    transform: translateY(6px);
+    transition: opacity .55s ease .1s, transform .55s ease .1s;
 }
 .nianhua.is-blooming .nianhua-bud { opacity: 0; }
 .nianhua.is-blooming .nianhua-petal {
     opacity: 1;
     transform: scale(1);
 }
-.nianhua.is-smiling .nianhua-smile { opacity: .85; }
+.nianhua.is-blooming .petal-l { transition-delay: .05s; }
+.nianhua.is-blooming .petal-r { transition-delay: .1s; }
+.nianhua.is-blooming .petal-c { transition-delay: 0s; }
+.nianhua.is-smiling .nianhua-smile { opacity: .9; }
 .nianhua.is-smiling .nianhua-text {
-    opacity: .9;
+    opacity: .95;
     transform: translateY(0);
+    color: var(--text);
 }
 @media (max-width: 640px) {
-    .nianhua { left: .75rem; bottom: .75rem; opacity: .4; }
-    .nianhua-mark { width: 2.5rem; height: 3.1rem; }
+    .nianhua { left: .75rem; bottom: .75rem; opacity: .55; }
+    .nianhua-mark { width: 2.8rem; height: 3.7rem; }
 }
 .page-main,
 .home-main {

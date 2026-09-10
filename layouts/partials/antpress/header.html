@@ -13,25 +13,31 @@
 {{- if .Site.Params.nianhua }}
 {{- $nianhuaText := .Site.Params.nianhuaText | default "拈花一笑" -}}
 <button type="button" class="nianhua" aria-label="{{ $nianhuaText }}，点击绽放" aria-pressed="false" title="{{ $nianhuaText }}">
-    <svg class="nianhua-mark" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- 手：拈花手势线稿 -->
-        <path class="nianhua-hand" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-              d="M22 72c0-10 2-18 6-24 2-3 5-5 8-5s6 2 7 5c1 2 1 5 0 8l-1 4c4-1 8 1 9 5 1 3 0 7-3 9-4 3-10 4-16 4-8 0-12-3-12-6z"/>
-        <path class="nianhua-hand" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-              d="M28 48c-1-8 1-16 5-22m8 18c0-7 1-14 4-20"/>
-        <!-- 莲蕾 / 花 -->
-        <g class="nianhua-flower" transform="translate(36 18)">
-            <path class="nianhua-petal petal-l" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
-                  d="M0 8 C-8 4 -10 -2 -4 -8 C-1 -2 0 2 0 8Z"/>
-            <path class="nianhua-petal petal-r" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
-                  d="M0 8 C8 4 10 -2 4 -8 C1 -2 0 2 0 8Z"/>
-            <path class="nianhua-petal petal-c" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
-                  d="M0 10 C-3 2 -2 -8 0 -12 C2 -8 3 2 0 10Z"/>
-            <circle class="nianhua-bud" cx="0" cy="2" r="3.2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <svg class="nianhua-mark" viewBox="0 0 72 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 莲茎 -->
+        <path class="nianhua-stem" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
+              d="M36 52 C36 60 34 68 32 78"/>
+        <!-- 花瓣（绽放态） -->
+        <g class="nianhua-flower">
+            <path class="nianhua-petal petal-l" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"
+                  d="M36 50 C24 46 18 34 22 24 C28 30 33 40 36 50Z"/>
+            <path class="nianhua-petal petal-r" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"
+                  d="M36 50 C48 46 54 34 50 24 C44 30 39 40 36 50Z"/>
+            <path class="nianhua-petal petal-c" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"
+                  d="M36 52 C30 40 31 22 36 14 C41 22 42 40 36 52Z"/>
+            <!-- 闭合莲蕾（初始） -->
+            <ellipse class="nianhua-bud" cx="36" cy="34" rx="7" ry="14" fill="none" stroke="currentColor" stroke-width="1.4"/>
         </g>
-        <!-- 微笑弧线 -->
-        <path class="nianhua-smile" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
-              d="M24 58 Q32 62 40 58"/>
+        <!-- 拈花手指 -->
+        <path class="nianhua-hand" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+              d="M28 78 C26 70 28 62 34 56 C36 54 38 54 40 56 C42 58 42 62 41 66"/>
+        <path class="nianhua-hand" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+              d="M22 82 C24 74 28 68 34 64"/>
+        <path class="nianhua-hand" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+              d="M18 88 C20 80 24 74 30 70 M40 66 C44 70 46 76 46 84"/>
+        <!-- 微笑 -->
+        <path class="nianhua-smile" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+              d="M26 72 Q36 78 46 72"/>
     </svg>
     <span class="nianhua-text">{{ $nianhuaText }}</span>
 </button>
