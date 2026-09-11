@@ -215,6 +215,7 @@ hr.stars::after {
     margin-left: 1rem;
 }
 .hero-row .hero-social a,
+.hero-row .hero-social .social-disabled,
 .hero-row .hero-social .theme-toggle {
     color: var(--text-mute);
     display: inline-flex;
@@ -225,6 +226,12 @@ hr.stars::after {
     padding: 0;
     cursor: pointer;
     font-size: 0;
+}
+.hero-row .hero-social .social-disabled {
+    color: var(--text-mute);
+    cursor: default;
+    display: inline-flex;
+    opacity: .65;
 }
 .hero-row .hero-social a:hover,
 .hero-row .hero-social .theme-toggle:hover {
