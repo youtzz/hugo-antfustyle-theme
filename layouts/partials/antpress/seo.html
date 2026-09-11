@@ -3,7 +3,9 @@
     {{- $description = . -}}
 {{- else -}}
     {{- if .IsPage -}}
-        {{- $description = .Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 160 -}}
+        {{- with .Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 160 -}}
+            {{- $description = . -}}
+        {{- end -}}
     {{- else -}}
         {{- with .Description -}}
             {{- $description = . -}}
