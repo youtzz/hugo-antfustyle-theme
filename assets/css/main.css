@@ -198,12 +198,15 @@ hr.stars::after {
 }
 .hero-row .hero-nav a {
     color: var(--text);
-    opacity: .85;
+    opacity: .6;
+    text-decoration: none;
     transition: opacity .15s;
 }
 .hero-row .hero-nav a:hover,
+.hero-row .hero-nav a:focus,
 .hero-row .hero-nav a.current {
     opacity: 1;
+    text-decoration: none;
 }
 .hero-row .hero-social {
     display: flex;
