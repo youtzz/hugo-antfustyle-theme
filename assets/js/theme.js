@@ -1,4 +1,4 @@
-/* antpress — 主题切换 + 中文标签 + 滚动到顶部 */
+/* antpress — 主题切换 + 滚动到顶部 */
 
 (function () {
   'use strict';
@@ -90,28 +90,4 @@
     });
   }
 
-  /* ============================
-   * 中文标签自动添加（antfu 风）
-   * 检测标题含 CJK 字符时显示「中文」小标签
-   * ============================ */
-  function addLangTags() {
-    var items = document.querySelectorAll('.archive-list li');
-    items.forEach(function (li) {
-      var titleEl = li.querySelector('.archive-title');
-      if (!titleEl) return;
-      if (li.querySelector('.lang-tag')) return;
-      var text = titleEl.textContent || '';
-      if (/[一-鿿]/.test(text)) {
-        var tag = document.createElement('span');
-        tag.className = 'lang-tag';
-        tag.textContent = '中文';
-        li.insertBefore(tag, titleEl);
-      }
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addLangTags);
-  } else {
-    addLangTags();
-  }
 })();

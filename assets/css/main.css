@@ -403,6 +403,7 @@ hr.stars::after {
     align-items: center;
     flex-wrap: wrap;
 }
+.archive-list li.has-section-tag { position: relative; }
 .archive-title {
     color: var(--text);
     flex: 1;
@@ -416,19 +417,20 @@ hr.stars::after {
 }
 
 /* ============================
- * 语言标签（中文 / 日本語）
+ * 栏目标签
  * ============================ */
-.lang-tag {
-    display: inline-block;
+.section-tag {
+    position: absolute;
+    right: calc(100% + .6rem);
+    top: 50%;
+    transform: translateY(-50%);
     padding: 1px 6px;
     font-size: .65em;
     color: var(--text-mute);
     border: 1px solid var(--border);
     border-radius: 3px;
-    margin-right: .6em;
     line-height: 1.4;
-    align-self: center;
-    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 /* ============================
@@ -633,6 +635,7 @@ hr.stars::after {
     .hero-name { font-size: 3rem; }
     .post-title { font-size: 1.4rem; }
     .archive-list li { flex-wrap: wrap; }
+    .section-tag { display: none; }
     .archive-year { font-size: 6rem; }
 }
 
@@ -664,6 +667,7 @@ hr.stars::after {
     .hero-row,
     .site-footer,
     .post-tags,
+    .section-tag,
     .post-toc,
     .to-top { display: none !important; }
     .page-main, .home-main, .post { max-width: 100%; padding: 0; }

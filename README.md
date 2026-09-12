@@ -88,7 +88,7 @@ antpress/
 │   │   └── main.css          # 主样式（typewriter + 暗色 + print）
 │   └── js/
 │       ├── plum.js           # ArtPlum canvas 算法
-│       └── theme.js          # 暗色切换 + 中文标签
+│       └── theme.js          # 暗色切换 + 回到顶部
 ├── layouts/
 │   ├── _default/
 │   │   ├── baseof.html       # 基础骨架
