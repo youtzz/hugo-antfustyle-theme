@@ -2,6 +2,19 @@
 
 
 <main class="page-main">
+    {{- if and (eq .Section "posts") .Fragments.Headings }}
+    <aside class="post-toc" aria-label="文章目录">
+        <span class="post-toc-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="img">
+                <path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z"></path>
+            </svg>
+        </span>
+        <div class="post-toc-list">
+            {{ .TableOfContents }}
+        </div>
+    </aside>
+    {{- end }}
+
     <article class="post">
         <header>
             <h1 class="post-title">{{ .Title }}</h1>

@@ -413,6 +413,7 @@ hr.stars::after {
  * 文章详情
  * ============================ */
 .post { max-width: 680px; margin: 0 auto; }
+.post-toc { display: none; }
 .post-title {
     font-size: 1.75rem;
     margin: 1em 0 .25em;
@@ -479,6 +480,78 @@ hr.stars::after {
 }
 .post-tags a { color: var(--text-mute); }
 .post-tags a:hover { color: var(--text); }
+
+@media (min-width: 1180px) {
+    .post-toc {
+        position: fixed;
+        top: 6.5rem;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        display: flex;
+        width: min(280px, calc((100vw - 680px) / 2 - 3rem));
+        flex-direction: column;
+        z-index: 20;
+        overflow: hidden;
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+            "Segoe UI", sans-serif;
+        font-size: .85rem;
+        line-height: 1.5;
+    }
+    .post-toc-icon {
+        display: flex;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin: 0 .5rem;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        opacity: .45;
+        transition: opacity .4s ease;
+    }
+    .post-toc-icon svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        fill: currentColor;
+    }
+    .post-toc-list {
+        min-height: 0;
+        margin-top: .35rem;
+        overflow-y: auto;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-.25rem);
+        transition: opacity .7s ease, transform .7s ease;
+    }
+    .page-main:hover .post-toc-icon { opacity: 1; }
+    .page-main:hover .post-toc-list {
+        opacity: .75;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
+    .post-toc nav > ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .post-toc li {
+        margin: .5em 0;
+        padding-left: .8rem;
+    }
+    .post-toc li ul {
+        padding-left: .5rem;
+        list-style: none;
+    }
+    .post-toc a {
+        color: inherit;
+        opacity: .85;
+        transition: opacity .15s ease, color .15s ease;
+    }
+    .post-toc a:hover {
+        color: var(--text);
+        opacity: 1;
+    }
+}
 
 /* ============================
  * 页脚
@@ -566,6 +639,7 @@ hr.stars::after {
     .hero-row,
     .site-footer,
     .post-tags,
+    .post-toc,
     .to-top { display: none !important; }
     .page-main, .home-main, .post { max-width: 100%; padding: 0; }
     .post-body a { color: var(--text); text-decoration: underline; }

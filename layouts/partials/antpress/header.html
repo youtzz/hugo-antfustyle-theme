@@ -6,11 +6,7 @@
 <!-- 顶部一行：logo + nav + social -->
 <header class="hero-row">
     <a class="brand" href="{{ "/" | relURL }}" aria-label="醒石首页">
-        <svg class="brand-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path class="logo-path"
-                  d="M20 24H80M49 24C47 37 41 48 29 59M35 51H73V82H35V51Z"
-                  stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-        </svg>
+        {{- partial "antpress/brand-logo.html" . }}
     </a>
 
     {{- with .Site.Menus.main }}
