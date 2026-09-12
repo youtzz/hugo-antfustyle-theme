@@ -28,6 +28,12 @@
                 <a href="{{ printf "categories/%s/" ( . | urlize) | relURL }}">{{ . }}</a>
                 {{- end }}
                 {{- end }}
+                {{- with .Params.tags }}
+                {{- range . }}
+                ·
+                <a class="post-tag" href="{{ printf "tags/%s/" ( . | urlize) | relURL }}">#{{ . }}</a>
+                {{- end }}
+                {{- end }}
             </p>
             {{- end }}
         </header>
@@ -39,15 +45,6 @@
         </div>
 
         <hr class="stars">
-
-        {{- with .Params.tags }}
-        <p class="post-tags muted">
-            {{- range . }}
-            <a href="{{ printf "tags/%s/" ( . | urlize) | relURL }}">#{{ . }}</a>
-            {{ if not (eq . (last 1 $.Params.tags)) }} · {{ end }}
-            {{- end }}
-        </p>
-        {{- end }}
 
         {{/* Hook: 项目级可定义 partials/antpress/post-extend.html（如 Twikoo 评论 / Sponsor 等） */}}
         {{- if templates.Exists "partials/antpress/post-extend.html" }}

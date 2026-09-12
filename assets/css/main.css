@@ -499,12 +499,8 @@ hr.stars::after {
     text-align: center;
     margin-top: .5em;
 }
-.post-tags {
-    margin: 1.5em 0;
-    font-size: .9em;
-}
-.post-tags a { color: var(--text-mute); }
-.post-tags a:hover { color: var(--text); }
+.post-tag { color: inherit; }
+.post-tag:hover { color: var(--text); }
 
 @media (min-width: 1024px) {
     .post-toc {
@@ -676,7 +672,7 @@ hr.stars::after {
     .page-decoration,
     .hero-row,
     .site-footer,
-    .post-tags,
+    .post-tag,
     .section-tag,
     .post-toc,
     .to-top { display: none !important; }
