@@ -15,6 +15,7 @@
     {{- end -}}
 {{- end -}}
 {{- $description = $description | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- $isNoindex := or (eq .RelPermalink "/404.html") (and .IsPage (.Params.hidden | default false)) -}}
 
 {{- $page := . -}}
 {{- $pageImage := "" -}}
@@ -36,7 +37,13 @@
         {{- $socialImage = . | absURL -}}
     {{- end -}}
 {{- end -}}
+{{- if and .IsPage (in .Site.Params.mainSections .Section) (not $pageImage) -}}
+    {{- $socialImage = "" -}}
+{{- end -}}
 
+{{- if $isNoindex }}
+<meta name="robots" content="noindex, follow">
+{{- else }}
 <meta name="description" content="{{ $description }}">
 <link rel="canonical" href="{{ .Permalink }}">
 
@@ -79,8 +86,15 @@
 {{- if not .IsHome -}}
     {{- $items := slice -}}
     {{- range .Ancestors.Reverse -}}
-        {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" (.LinkTitle | plainify) "item" .Permalink) -}}
+        {{- if .Permalink -}}
+            {{- $name := .LinkTitle | plainify -}}
+            {{- if not $name -}}
+                {{- $name = $.Site.Title -}}
+            {{- end -}}
+            {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" $name "item" .Permalink) -}}
+        {{- end -}}
     {{- end -}}
     {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" (.LinkTitle | plainify) "item" .Permalink) -}}
     {{- dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
 {{- end -}}
+{{- end }}

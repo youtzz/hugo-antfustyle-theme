@@ -237,11 +237,14 @@ hr.stars::after {
     margin-left: 1rem;
 }
 .hero-row .hero-social a,
-.hero-row .hero-social .social-disabled,
 .hero-row .hero-social .theme-toggle {
     color: var(--text-mute);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
     transition: color .15s;
     background: transparent;
     border: 0;
@@ -627,7 +630,7 @@ hr.stars::after {
         flex-wrap: nowrap;     /* 强制单行；nav/social 缩字号撑住 375+ */
     }
     .hero-row .hero-nav { gap: .5rem; margin-left: auto; font-size: .9em; }
-    .hero-row .hero-social { gap: .5rem; margin-left: .5rem; }
+    .hero-row .hero-social { gap: 0; margin-left: 0; }
     .hero-row .hero-social svg { width: 14px; height: 14px; }   /* 16→14 给 nowrap 留余地 */
     .home-main { padding: 0 1rem 1.5rem; }   /* 收紧底部，避免与 footer 间距叠加 */
     .page-main { padding: 0 1rem 1.5rem; }
