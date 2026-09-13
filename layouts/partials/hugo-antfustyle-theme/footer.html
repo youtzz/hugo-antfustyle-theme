@@ -5,9 +5,9 @@
     <p>
         &copy; {{ now.Format "2006" }} {{ .Site.Title }}
     </p>
-    {{/* Hook: 项目级可定义 partials/antpress/footer-extend.html 追加内容（Twikoo / 友链 / 站龄计算等） */}}
-    {{- if templates.Exists "partials/antpress/footer-extend.html" }}
-    {{- partial "antpress/footer-extend.html" . }}
+    {{/* Hook: 项目级可定义 partials/hugo-antfustyle-theme/footer-extend.html 追加内容（Twikoo / 友链 / 站龄计算等） */}}
+    {{- if templates.Exists "partials/hugo-antfustyle-theme/footer-extend.html" }}
+    {{- partial "hugo-antfustyle-theme/footer-extend.html" . }}
     {{- end }}
 </footer>
 

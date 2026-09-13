@@ -1,4 +1,4 @@
-/* antpress — 主题切换 + 滚动到顶部 */
+/* hugo-antfustyle-theme — 主题切换 + 滚动到顶部 */
 
 (function () {
   'use strict';
@@ -6,7 +6,7 @@
   /* ============================
    * 主题切换（跟随系统 + 用户偏好持久化 + 圆环扩散动画）
    * ============================ */
-  var STORAGE_KEY = 'antpress-theme';
+  var STORAGE_KEY = 'hugo-antfustyle-theme-theme';
   var saved = localStorage.getItem(STORAGE_KEY);
   var colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
   var hasSavedTheme = saved === 'dark' || saved === 'light';

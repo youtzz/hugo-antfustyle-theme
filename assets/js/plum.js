@@ -1,4 +1,4 @@
-/* antpress — ArtPlum 程序化装饰
+/* hugo-antfustyle-theme — ArtPlum 程序化装饰
  * 移植自 antfu.me 的 src/components/ArtPlum.vue
  * 用 L-system 算法在 canvas 上随机生成羽毛/枝叶装饰图
  */

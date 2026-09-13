@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ block "title" . }}{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
-    {{- partial "antpress/seo.html" . }}
+    {{- partial "hugo-antfustyle-theme/seo.html" . }}
     {{- with .Site.Params.favicon }}
     <link rel="icon" href="{{ . }}">
     {{- end }}
@@ -19,7 +19,7 @@
     {{- end }}
 </head>
 <body>
-    {{- partial "antpress/header.html" . }}
+    {{- partial "hugo-antfustyle-theme/header.html" . }}
 
     {{/* Hook: 项目级 partials/custom_head.html（如字体预加载 / 统计脚本） */}}
     {{- if templates.Exists "partials/custom_head.html" }}
@@ -28,7 +28,7 @@
 
     {{- block "main" . }}{{ end }}
 
-    {{- partial "antpress/footer.html" . }}
+    {{- partial "hugo-antfustyle-theme/footer.html" . }}
 
     {{/* Hook: 项目级 partials/custom_body.html（如 copy code / fancybox / Twikoo 加载器） */}}
     {{- if templates.Exists "partials/custom_body.html" }}

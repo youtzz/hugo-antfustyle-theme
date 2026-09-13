@@ -1,4 +1,4 @@
-# antpress
+# hugo-antfustyle-theme
 
 > A Hugo theme inspired by [antfu.me](https://antfu.me/).
 
@@ -20,16 +20,16 @@
 ```bash
 # 作为 Hugo 站点的主题使用
 cd /path/to/your-hugo-site/themes
-git clone https://github.com/youtzz/hugo-antpress-theme.git antpress
+git clone https://github.com/youtzz/hugo-antfustyle-theme.git hugo-antfustyle-theme
 
 # 在 hugo.toml 中启用
-echo 'theme = "antpress"' >> hugo.toml
+echo 'theme = "hugo-antfustyle-theme"' >> hugo.toml
 ```
 
 或者作为 git submodule：
 
 ```bash
-git submodule add https://github.com/youtzz/hugo-antpress-theme.git themes/antpress
+git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
 ```
 
 ## 配置
@@ -62,9 +62,9 @@ git submodule add https://github.com/youtzz/hugo-antpress-theme.git themes/antpr
 
 - `layouts/partials/custom_head.html`：`head` 相关扩展
 - `layouts/partials/custom_body.html`：页面底部脚本
-- `layouts/partials/antpress/hero-extend.html`：首页补充内容
-- `layouts/partials/antpress/post-extend.html`：文章页补充内容
-- `layouts/partials/antpress/footer-extend.html`：页脚补充内容
+- `layouts/partials/hugo-antfustyle-theme/hero-extend.html`：首页补充内容
+- `layouts/partials/hugo-antfustyle-theme/post-extend.html`：文章页补充内容
+- `layouts/partials/hugo-antfustyle-theme/footer-extend.html`：页脚补充内容
 - `assets/custom.css`：项目样式；支持 Hugo template 表达式，主题会压缩并生成指纹
 
 ## 本地验证
@@ -78,7 +78,7 @@ hugo --source exampleSite --themesDir ../..
 ## 文件结构
 
 ```
-antpress/
+hugo-antfustyle-theme/
 ├── theme.toml                # 主题元数据
 ├── LICENSE # MIT
 ├── archetypes/
@@ -95,7 +95,7 @@ antpress/
 │   │   ├── list.html         # 列表页（年份水印 + 紧凑列表）
 │   │   ├── single.html       # 文章详情
 │   │   └── terms.html        # 标签 / 分类
-│   ├── partials/antpress/
+│   ├── partials/hugo-antfustyle-theme/
 │   │   ├── header.html       # 顶部一行（logo + nav + social）
 │   │   └── footer.html       # 页脚 + JS 加载
 │   ├── index.html            # 首页简介 + 最近文章
