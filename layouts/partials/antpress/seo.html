@@ -75,3 +75,12 @@
     {{- end -}}
     {{- dict "@context" "https://schema.org" "@type" $schemaType "name" .Title "description" $description "url" .Permalink | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
 {{- end -}}
+
+{{- if not .IsHome -}}
+    {{- $items := slice -}}
+    {{- range .Ancestors.Reverse -}}
+        {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" (.LinkTitle | plainify) "item" .Permalink) -}}
+    {{- end -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" (.LinkTitle | plainify) "item" .Permalink) -}}
+    {{- dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
+{{- end -}}
