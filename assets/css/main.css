@@ -263,6 +263,12 @@ hr.stars::after {
     color: var(--text);
     text-decoration: none;
 }
+/* ponytail: bluesky 链接容器 16×16，复刻"未配链接"span 时的紧凑布局；点击区 16×16 偏小，移动端若需大点击区，统一所有 social icon 改成 24×24 + gap:0。 */
+.hero-row .hero-social a[title="Bluesky"] {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+}
 .hero-row .hero-social svg {
     width: 16px;
     height: 16px;
