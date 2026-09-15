@@ -21,7 +21,7 @@
             </a>
             <span class="archive-meta">
                 {{ .Date.Format "Jan 2" }} ·
-                {{ if gt .ReadingTime 0 }}{{ .ReadingTime }}min{{ else }}1min{{ end }}
+                {{ partial "reading-time.html" (dict "n" .ReadingTime) }}
             </span>
         </li>
         {{- end }}
