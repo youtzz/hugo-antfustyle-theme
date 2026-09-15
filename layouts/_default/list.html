@@ -9,7 +9,7 @@
 
     <hr class="stars">
 
-    {{- $pages := where .Pages "Type" "posts" }}
+    {{- $pages := where .Pages "Type" "in" (site.Params.mainSections | default (slice "posts")) }}
     {{- if $pages }}
     {{- range $pages.GroupByDate "2006" }}
     <h2 class="archive-year">{{ .Key }}</h2>
