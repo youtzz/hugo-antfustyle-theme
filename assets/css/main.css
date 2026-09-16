@@ -294,20 +294,171 @@ hr.stars::after {
     z-index: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .home-main > :not(.archive-year),
-    .page-main > :not(.archive-year) {
+/*
+ * 进站错落入场 — 对齐 antfu.me slide-enter
+ * - 容器直接子元素（含年份水印；排除 .archive-list / .post-toc）
+ * - .archive-list > li 组内再错落（父 ul 本身不透明度动画，避免与 li 叠乘）
+ */
+@keyframes slide-enter {
+    0% {
+        transform: translateY(10px);
         opacity: 0;
-        transform: translateY(8px);
-        animation: page-enter .45s ease-out forwards;
     }
-    .home-main > :nth-child(2),
-    .page-main > :nth-child(2) { animation-delay: .06s; }
-    .home-main > :nth-child(3),
-    .page-main > :nth-child(3) { animation-delay: .12s; }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
-@keyframes page-enter {
-    to { opacity: 1; transform: translateY(0); }
+
+/* 年份水印自身 opacity:.15；入场终值必须回到 .15，不能被 slide-enter 拉到 1 */
+@keyframes slide-enter-year {
+    0% {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: .15;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .home-main > *:not(.archive-list),
+    .page-main > *:not(.archive-list):not(.post-toc) {
+        /* 超出 nth-child 表的节点靠后出现，避免默认 stage 0 抢先 */
+        --enter-stage: 24;
+        --enter-step: 90ms;
+        --enter-initial: 0ms;
+        opacity: 0;
+        animation: slide-enter 1s both 1;
+        animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+    }
+
+    .home-main > .archive-year,
+    .page-main > .archive-year {
+        animation-name: slide-enter-year;
+    }
+
+    .home-main > *:nth-child(1),
+    .page-main > *:nth-child(1) { --enter-stage: 1; }
+    .home-main > *:nth-child(2),
+    .page-main > *:nth-child(2) { --enter-stage: 2; }
+    .home-main > *:nth-child(3),
+    .page-main > *:nth-child(3) { --enter-stage: 3; }
+    .home-main > *:nth-child(4),
+    .page-main > *:nth-child(4) { --enter-stage: 4; }
+    .home-main > *:nth-child(5),
+    .page-main > *:nth-child(5) { --enter-stage: 5; }
+    .home-main > *:nth-child(6),
+    .page-main > *:nth-child(6) { --enter-stage: 6; }
+    .home-main > *:nth-child(7),
+    .page-main > *:nth-child(7) { --enter-stage: 7; }
+    .home-main > *:nth-child(8),
+    .page-main > *:nth-child(8) { --enter-stage: 8; }
+    .home-main > *:nth-child(9),
+    .page-main > *:nth-child(9) { --enter-stage: 9; }
+    .home-main > *:nth-child(10),
+    .page-main > *:nth-child(10) { --enter-stage: 10; }
+    .home-main > *:nth-child(11),
+    .page-main > *:nth-child(11) { --enter-stage: 11; }
+    .home-main > *:nth-child(12),
+    .page-main > *:nth-child(12) { --enter-stage: 12; }
+    .home-main > *:nth-child(13),
+    .page-main > *:nth-child(13) { --enter-stage: 13; }
+    .home-main > *:nth-child(14),
+    .page-main > *:nth-child(14) { --enter-stage: 14; }
+    .home-main > *:nth-child(15),
+    .page-main > *:nth-child(15) { --enter-stage: 15; }
+    .home-main > *:nth-child(16),
+    .page-main > *:nth-child(16) { --enter-stage: 16; }
+    .home-main > *:nth-child(17),
+    .page-main > *:nth-child(17) { --enter-stage: 17; }
+    .home-main > *:nth-child(18),
+    .page-main > *:nth-child(18) { --enter-stage: 18; }
+    .home-main > *:nth-child(19),
+    .page-main > *:nth-child(19) { --enter-stage: 19; }
+    .home-main > *:nth-child(20),
+    .page-main > *:nth-child(20) { --enter-stage: 20; }
+    .home-main > *:nth-child(21),
+    .page-main > *:nth-child(21) { --enter-stage: 21; }
+    .home-main > *:nth-child(22),
+    .page-main > *:nth-child(22) { --enter-stage: 22; }
+    .home-main > *:nth-child(23),
+    .page-main > *:nth-child(23) { --enter-stage: 23; }
+    .home-main > *:nth-child(24),
+    .page-main > *:nth-child(24) { --enter-stage: 24; }
+
+    .archive-list > li {
+        /* 超出 20 条的条目靠后出现 */
+        --enter-stage: 20;
+        --enter-step: 60ms;
+        --enter-initial: 120ms;
+        opacity: 0;
+        animation: slide-enter 1s both 1;
+        animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+    }
+    .archive-list > li:nth-child(1) { --enter-stage: 1; }
+    .archive-list > li:nth-child(2) { --enter-stage: 2; }
+    .archive-list > li:nth-child(3) { --enter-stage: 3; }
+    .archive-list > li:nth-child(4) { --enter-stage: 4; }
+    .archive-list > li:nth-child(5) { --enter-stage: 5; }
+    .archive-list > li:nth-child(6) { --enter-stage: 6; }
+    .archive-list > li:nth-child(7) { --enter-stage: 7; }
+    .archive-list > li:nth-child(8) { --enter-stage: 8; }
+    .archive-list > li:nth-child(9) { --enter-stage: 9; }
+    .archive-list > li:nth-child(10) { --enter-stage: 10; }
+    .archive-list > li:nth-child(11) { --enter-stage: 11; }
+    .archive-list > li:nth-child(12) { --enter-stage: 12; }
+    .archive-list > li:nth-child(13) { --enter-stage: 13; }
+    .archive-list > li:nth-child(14) { --enter-stage: 14; }
+    .archive-list > li:nth-child(15) { --enter-stage: 15; }
+    .archive-list > li:nth-child(16) { --enter-stage: 16; }
+    .archive-list > li:nth-child(17) { --enter-stage: 17; }
+    .archive-list > li:nth-child(18) { --enter-stage: 18; }
+    .archive-list > li:nth-child(19) { --enter-stage: 19; }
+    .archive-list > li:nth-child(20) { --enter-stage: 20; }
+
+    /*
+     * 容器本身不入场、子项错落 — 供相册墙 / 书架等网格使用
+     * 用法：父元素加 .slide-enter-items
+     */
+    .home-main > .slide-enter-items,
+    .page-main > .slide-enter-items {
+        animation: none;
+        opacity: 1;
+    }
+    .slide-enter-items > * {
+        --enter-stage: 16;
+        --enter-step: 60ms;
+        --enter-initial: 100ms;
+        opacity: 0;
+        animation: slide-enter 1s both 1;
+        animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+    }
+    .slide-enter-items > *:nth-child(1) { --enter-stage: 1; }
+    .slide-enter-items > *:nth-child(2) { --enter-stage: 2; }
+    .slide-enter-items > *:nth-child(3) { --enter-stage: 3; }
+    .slide-enter-items > *:nth-child(4) { --enter-stage: 4; }
+    .slide-enter-items > *:nth-child(5) { --enter-stage: 5; }
+    .slide-enter-items > *:nth-child(6) { --enter-stage: 6; }
+    .slide-enter-items > *:nth-child(7) { --enter-stage: 7; }
+    .slide-enter-items > *:nth-child(8) { --enter-stage: 8; }
+    .slide-enter-items > *:nth-child(9) { --enter-stage: 9; }
+    .slide-enter-items > *:nth-child(10) { --enter-stage: 10; }
+    .slide-enter-items > *:nth-child(11) { --enter-stage: 11; }
+    .slide-enter-items > *:nth-child(12) { --enter-stage: 12; }
+    .slide-enter-items > *:nth-child(13) { --enter-stage: 13; }
+    .slide-enter-items > *:nth-child(14) { --enter-stage: 14; }
+    .slide-enter-items > *:nth-child(15) { --enter-stage: 15; }
+    .slide-enter-items > *:nth-child(16) { --enter-stage: 16; }
+    .slide-enter-items > *:nth-child(17) { --enter-stage: 17; }
+    .slide-enter-items > *:nth-child(18) { --enter-stage: 18; }
+    .slide-enter-items > *:nth-child(19) { --enter-stage: 19; }
+    .slide-enter-items > *:nth-child(20) { --enter-stage: 20; }
+    .slide-enter-items > *:nth-child(21) { --enter-stage: 21; }
+    .slide-enter-items > *:nth-child(22) { --enter-stage: 22; }
+    .slide-enter-items > *:nth-child(23) { --enter-stage: 23; }
+    .slide-enter-items > *:nth-child(24) { --enter-stage: 24; }
 }
 
 /* ============================
