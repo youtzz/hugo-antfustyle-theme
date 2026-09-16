@@ -75,8 +75,8 @@
         {{- $article = merge $article (dict "image" .) -}}
     {{- end -}}
     {{- $article | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
-{{- else if or .IsPage .IsBranch -}}
-    {{- $schemaType := cond .IsBranch "CollectionPage" "WebPage" -}}
+{{- else if or .IsPage (in (slice "section" "taxonomy" "term") .Kind) -}}
+    {{- $schemaType := cond (in (slice "section" "taxonomy" "term") .Kind) "CollectionPage" "WebPage" -}}
     {{- with .Params.schemaType -}}
         {{- $schemaType = . -}}
     {{- end -}}
