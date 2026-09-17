@@ -402,6 +402,7 @@ hr.stars::after {
     color: var(--text-mute);
     opacity: .15;
     letter-spacing: -.03em;
+    pointer-events: none;
 }
 
 /* ============================
