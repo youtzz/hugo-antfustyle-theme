@@ -44,6 +44,11 @@
             {{ .Content }}
         </div>
 
+        {{/* Hook: 项目级可定义 partials/hugo-antfustyle-theme/post-body-extend.html 追加正文落款等内容 */}}
+        {{- if templates.Exists "_partials/hugo-antfustyle-theme/post-body-extend.html" }}
+        {{- partial "hugo-antfustyle-theme/post-body-extend.html" . }}
+        {{- end }}
+
         <hr class="stars">
 
         {{/* Hook: 项目级可定义 partials/hugo-antfustyle-theme/post-extend.html（如 Twikoo 评论 / Sponsor 等） */}}
