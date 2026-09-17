@@ -1,0 +1,4 @@
+{{- .Page.Store.Set "hasPhotoStrip" true -}}
+<div class="photo-strip" role="region" aria-label="{{ .Get "label" | default "Photo gallery" }}" tabindex="0">
+    {{- .Inner -}}
+</div>
