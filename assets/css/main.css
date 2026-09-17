@@ -294,7 +294,7 @@ hr.stars::after {
     z-index: 1;
 }
 
-/* 首页进站错落 — 保留一个安静的主动作，不扩散到内页和网格 */
+/* 首页进站错落 — 仅介绍、近期更新、页尾扩展三组参与 */
 @keyframes slide-enter {
     0% {
         transform: translateY(10px);
@@ -319,9 +319,10 @@ hr.stars::after {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .home-main > * {
-        /* 超出 nth-child 表的节点靠后出现 */
-        --enter-stage: 24;
+    .home-main > :is(.hero-name, .hero-tagline, .hero-bio, .hero-paragraph),
+    .home-main > :is(.home-list-title, .archive-year, .archive-list, .all-posts-link),
+    .home-main > :is(.stars, .home-section) {
+        --enter-stage: 0;
         --enter-step: 60ms;
         --enter-initial: 0ms;
         opacity: 0;
@@ -333,30 +334,13 @@ hr.stars::after {
         animation-name: slide-enter-year;
     }
 
-    .home-main > *:nth-child(1) { --enter-stage: 1; }
-    .home-main > *:nth-child(2) { --enter-stage: 2; }
-    .home-main > *:nth-child(3) { --enter-stage: 3; }
-    .home-main > *:nth-child(4) { --enter-stage: 4; }
-    .home-main > *:nth-child(5) { --enter-stage: 5; }
-    .home-main > *:nth-child(6) { --enter-stage: 6; }
-    .home-main > *:nth-child(7) { --enter-stage: 7; }
-    .home-main > *:nth-child(8) { --enter-stage: 8; }
-    .home-main > *:nth-child(9) { --enter-stage: 9; }
-    .home-main > *:nth-child(10) { --enter-stage: 10; }
-    .home-main > *:nth-child(11) { --enter-stage: 11; }
-    .home-main > *:nth-child(12) { --enter-stage: 12; }
-    .home-main > *:nth-child(13) { --enter-stage: 13; }
-    .home-main > *:nth-child(14) { --enter-stage: 14; }
-    .home-main > *:nth-child(15) { --enter-stage: 15; }
-    .home-main > *:nth-child(16) { --enter-stage: 16; }
-    .home-main > *:nth-child(17) { --enter-stage: 17; }
-    .home-main > *:nth-child(18) { --enter-stage: 18; }
-    .home-main > *:nth-child(19) { --enter-stage: 19; }
-    .home-main > *:nth-child(20) { --enter-stage: 20; }
-    .home-main > *:nth-child(21) { --enter-stage: 21; }
-    .home-main > *:nth-child(22) { --enter-stage: 22; }
-    .home-main > *:nth-child(23) { --enter-stage: 23; }
-    .home-main > *:nth-child(24) { --enter-stage: 24; }
+    .home-main > :is(.home-list-title, .archive-year, .archive-list, .all-posts-link) {
+        --enter-stage: 1;
+    }
+
+    .home-main > :is(.stars, .home-section) {
+        --enter-stage: 2;
+    }
 }
 
 /* ============================
