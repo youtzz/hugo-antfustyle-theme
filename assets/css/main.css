@@ -294,10 +294,10 @@ hr.stars::after {
     z-index: 1;
 }
 
-/* 首页进站错落 — 仅介绍、近期更新、页尾扩展三组参与 */
+/* 首页签名轻入场 — 只动标题与 bio，其余内容保持静止 */
 @keyframes slide-enter {
     0% {
-        transform: translateY(10px);
+        transform: translateY(8px);
         opacity: 0;
     }
     to {
@@ -306,40 +306,14 @@ hr.stars::after {
     }
 }
 
-/* 年份水印自身 opacity:.15；入场终值必须回到 .15，不能被 slide-enter 拉到 1 */
-@keyframes slide-enter-year {
-    0% {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: .15;
-    }
-}
-
 @media (prefers-reduced-motion: no-preference) {
-    .home-main > :is(.hero-name, .hero-tagline, .hero-bio, .hero-paragraph),
-    .home-main > :is(.home-list-title, .archive-year, .archive-list, .all-posts-link),
-    .home-main > :is(.stars, .home-section) {
-        --enter-stage: 0;
-        --enter-step: 60ms;
-        --enter-initial: 0ms;
+    .home-main > :is(.hero-name, .hero-tagline, .hero-bio, .hero-paragraph) {
         opacity: 0;
-        animation: slide-enter 600ms both 1;
-        animation-delay: calc(var(--enter-initial) + var(--enter-stage) * var(--enter-step));
+        animation: slide-enter 450ms ease-out both 1;
     }
 
-    .home-main > .archive-year {
-        animation-name: slide-enter-year;
-    }
-
-    .home-main > :is(.home-list-title, .archive-year, .archive-list, .all-posts-link) {
-        --enter-stage: 1;
-    }
-
-    .home-main > :is(.stars, .home-section) {
-        --enter-stage: 2;
+    .home-main > :is(.hero-tagline, .hero-bio, .hero-paragraph) {
+        animation-delay: 60ms;
     }
 }
 
