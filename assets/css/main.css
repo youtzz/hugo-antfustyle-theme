@@ -447,13 +447,41 @@ hr.stars::after {
     flex-wrap: wrap;
 }
 .archive-list li.has-section-tag { position: relative; }
-.archive-title {
-    color: var(--text);
+/* Hit target is full-row (.archive-link flex:1); visual feedback only on .archive-title text */
+.archive-link {
     flex: 1;
     min-width: 0;
+    color: var(--text);
+}
+.archive-link:active,
+.archive-link:focus-visible {
+    /* neutralize global a:active / a:focus-visible on the flex hit-box */
+    text-decoration: none;
+    opacity: 1;
+}
+.archive-title {
+    color: var(--text);
 }
 @media (hover: hover) and (pointer: fine) {
-    .archive-title:hover { color: var(--link-hover); text-decoration: underline; }
+    .archive-link:hover {
+        color: var(--text);
+        text-decoration: none;
+    }
+    .archive-link:hover .archive-title {
+        color: var(--link-hover);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+}
+.archive-link:active .archive-title {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    opacity: .78;
+}
+.archive-link:focus-visible .archive-title {
+    color: var(--link-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 .archive-meta {
     color: var(--text-mute);
