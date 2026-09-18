@@ -91,6 +91,11 @@ a:focus-visible {
     text-decoration: underline;
     text-underline-offset: 3px;
 }
+a:active {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    opacity: .78;
+}
 a:focus-visible,
 button:focus-visible {
     outline: 2px solid currentColor;
