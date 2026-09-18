@@ -461,6 +461,7 @@ hr.stars::after {
 }
 .archive-title {
     color: var(--text);
+    transition: transform .12s ease, opacity .12s ease;
 }
 @media (hover: hover) and (pointer: fine) {
     .archive-link:hover {
@@ -476,7 +477,8 @@ hr.stars::after {
 .archive-link:active .archive-title {
     text-decoration: underline;
     text-underline-offset: 3px;
-    opacity: .78;
+    opacity: .7;
+    transform: translateY(1px);
 }
 .archive-link:focus-visible .archive-title {
     color: var(--link-hover);
