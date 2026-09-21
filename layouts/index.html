@@ -23,16 +23,21 @@
     </p>
     {{- end }}
 
-    {{- $posts := where .Site.RegularPages "Type" "posts" }}
+    {{- $updates := where .Site.RegularPages "Type" "in" .Site.MainSections }}
+    {{- $updates = where $updates "Params.hidden" "ne" true }}
+    {{- $primarySection := index .Site.MainSections 0 }}
     {{- $recentCount := .Site.Params.homerecentcount | default 8 }}
-    {{- $recentPosts := first $recentCount $posts.ByDate.Reverse }}
-    {{- with $recentPosts }}
+    {{- $recentUpdates := first $recentCount $updates.ByDate.Reverse }}
+    {{- with $recentUpdates }}
     <h2 class="home-list-title">{{ $.Site.Params.homerecenttitle | default "Recent posts" }}</h2>
     {{- range .GroupByDate "2006" }}
     <h2 class="archive-year">{{ .Key }}</h2>
     <ul class="archive-list">
         {{- range .Pages }}
-        <li>
+        <li{{ if ne .Type $primarySection }} class="has-section-tag"{{ end }}>
+            {{- if ne .Type $primarySection }}
+            <span class="section-tag">{{ .CurrentSection.LinkTitle }}</span>
+            {{- end }}
             <a class="archive-title" href="{{ .RelPermalink }}">
                 {{ .Title }}
             </a>

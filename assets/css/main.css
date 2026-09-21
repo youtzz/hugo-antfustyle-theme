@@ -32,6 +32,28 @@
     --code-bg: #1A1A1A;
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    z-index: 1;
+}
+
+::view-transition-new(root) {
+    z-index: 9999;
+}
+
+:root[data-theme="dark"]::view-transition-old(root) {
+    z-index: 9999;
+}
+
+:root[data-theme="dark"]::view-transition-new(root) {
+    z-index: 1;
+}
+
 /* ============================
  * 字体
  * ============================ */
@@ -219,12 +241,22 @@ hr.stars::after {
     color: var(--text-mute);
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
     transition: color .15s;
     background: transparent;
     border: 0;
     padding: 0;
     cursor: pointer;
     font-size: 0;
+}
+.hero-row .hero-social .social-disabled {
+    color: var(--text-mute);
+    cursor: default;
+    display: inline-flex;
+    opacity: .65;
 }
 .hero-row .hero-social a:hover,
 .hero-row .hero-social .theme-toggle:hover {
@@ -251,7 +283,7 @@ hr.stars::after {
 .home-main {
     max-width: 720px;
     margin: 0 auto;
-    padding: 0 1.5rem 4rem;
+    padding: 0 1.5rem 1.5rem;   /* 4rem → 1.5rem 桌面：与窄屏对齐，去掉与 footer 间距叠加 */
     position: relative;
     z-index: 1;
 }
@@ -276,8 +308,9 @@ hr.stars::after {
  * 首页 home-section
  * ============================ */
 .home-section {
-    margin: 2.5em 0;
+    margin: 1.5em 0;
 }
+.home-section:last-of-type { margin-bottom: 0; }
 .home-section h2 {
     font-size: 1.1rem;
     font-weight: 600;
@@ -374,6 +407,7 @@ hr.stars::after {
     align-items: center;
     flex-wrap: wrap;
 }
+.archive-list li.has-section-tag { position: relative; }
 .archive-title {
     color: var(--text);
     flex: 1;
@@ -387,25 +421,27 @@ hr.stars::after {
 }
 
 /* ============================
- * 语言标签（中文 / 日本語）
+ * 栏目标签
  * ============================ */
-.lang-tag {
-    display: inline-block;
+.section-tag {
+    position: absolute;
+    right: calc(100% + .6rem);
+    top: 50%;
+    transform: translateY(-50%);
     padding: 1px 6px;
     font-size: .65em;
     color: var(--text-mute);
     border: 1px solid var(--border);
     border-radius: 3px;
-    margin-right: .6em;
     line-height: 1.4;
-    align-self: center;
-    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 /* ============================
  * 文章详情
  * ============================ */
 .post { max-width: 680px; margin: 0 auto; }
+.post-toc { display: none; }
 .post-title {
     font-size: 1.75rem;
     margin: 1em 0 .25em;
@@ -466,12 +502,83 @@ hr.stars::after {
     text-align: center;
     margin-top: .5em;
 }
-.post-tags {
-    margin: 1.5em 0;
-    font-size: .9em;
+.post-tag { color: inherit; }
+.post-tag:hover { color: var(--text); }
+
+@media (min-width: 1024px) {
+    .post-toc {
+        position: fixed;
+        top: 90px;
+        bottom: 0;
+        left: 20px;
+        display: flex;
+        width: 200px;
+        flex-direction: column;
+        z-index: 20;
+        overflow: hidden;
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+            "Segoe UI", sans-serif;
+        font-size: .8rem;
+    }
+    .post-toc-icon {
+        display: flex;
+        width: 1.75rem;
+        height: 1.75rem;
+        margin: 0 .5rem;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        color: #88888877;
+        transition: color .4s cubic-bezier(.4, 0, .2, 1);
+    }
+    .post-toc-icon svg {
+        width: 1.35rem;
+        height: 1.35rem;
+        fill: currentColor;
+    }
+    .post-toc-list {
+        min-height: 0;
+        margin-top: .35rem;
+        padding-bottom: 1.25rem;
+        overflow-y: auto;
+        border-radius: .25rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .7s cubic-bezier(.4, 0, .2, 1);
+    }
+    .page-main:hover .post-toc-icon { color: inherit; }
+    .page-main:hover .post-toc-list {
+        opacity: .75;
+        pointer-events: auto;
+    }
+    .post-toc nav > ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .post-toc li {
+        margin: .5em 0;
+        padding-left: .8rem;
+    }
+    .post-toc li ul {
+        padding-left: .5rem;
+        list-style: none;
+    }
+    .post-toc a {
+        color: inherit;
+        opacity: .75;
+        transition: opacity .15s cubic-bezier(.4, 0, .2, 1);
+    }
+    .post-toc a:hover {
+        color: var(--text);
+        opacity: 1;
+    }
 }
-.post-tags a { color: var(--text-mute); }
-.post-tags a:hover { color: var(--text); }
+
+@media (min-width: 1280px) {
+    .post-toc { width: 300px; }
+}
 
 /* ============================
  * 页脚
@@ -519,15 +626,25 @@ hr.stars::after {
 @media (max-width: 720px) {
     .hero-row {
         padding: 1rem;
-        gap: 1rem;
+        gap: .5rem;
+        flex-wrap: nowrap;     /* 强制单行；nav/social 缩字号撑住 375+ */
     }
-    .hero-row .hero-nav { gap: 1rem; margin-left: auto; }
-    .home-main { padding: 0 1rem 3rem; }
-    .page-main { padding: 0 1rem 3rem; }
+    .hero-row .hero-nav { gap: .5rem; margin-left: auto; font-size: .9em; }
+    .hero-row .hero-social { gap: 0; margin-left: 0; }
+    .hero-row .hero-social svg { width: 14px; height: 14px; }   /* 16→14 给 nowrap 留余地 */
+    .home-main { padding: 0 1rem 1.5rem; }   /* 收紧底部，避免与 footer 间距叠加 */
+    .page-main { padding: 0 1rem 1.5rem; }
+    .site-footer { margin-top: 1.5rem; padding: 1.5rem 1.5rem 3rem; }   /* 4rem+2rem → 1.5rem+1.5rem */
     h1 { font-size: 1.6rem; }
     .hero-name { font-size: 3rem; }
     .post-title { font-size: 1.4rem; }
     .archive-list li { flex-wrap: wrap; }
+    .archive-list li.has-section-tag { gap: .3rem .65rem; }
+    .section-tag {
+        position: static;
+        transform: none;
+        flex-shrink: 0;
+    }
     .archive-year { font-size: 6rem; }
 }
 
@@ -558,7 +675,9 @@ hr.stars::after {
     .page-decoration,
     .hero-row,
     .site-footer,
-    .post-tags,
+    .post-tag,
+    .section-tag,
+    .post-toc,
     .to-top { display: none !important; }
     .page-main, .home-main, .post { max-width: 100%; padding: 0; }
     .post-body a { color: var(--text); text-decoration: underline; }

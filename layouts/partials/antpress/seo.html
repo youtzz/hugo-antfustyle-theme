@@ -1,0 +1,100 @@
+{{- $description := .Site.Params.description | default "" -}}
+{{- with .Params.description -}}
+    {{- $description = . -}}
+{{- else -}}
+    {{- if and .IsPage .Params.image .Params.alt -}}
+        {{- $description = .Params.alt -}}
+    {{- else if .IsPage -}}
+        {{- with .Summary | plainify | htmlUnescape | strings.TrimSpace | truncate 160 -}}
+            {{- $description = . -}}
+        {{- end -}}
+    {{- else -}}
+        {{- with .Description -}}
+            {{- $description = . -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $description = $description | plainify | htmlUnescape | strings.TrimSpace -}}
+{{- $isNoindex := or (eq .RelPermalink "/404.html") (and .IsPage (.Params.hidden | default false)) -}}
+
+{{- $page := . -}}
+{{- $pageImage := "" -}}
+{{- with (or .Params.featuredimage .Params.cover .Params.image) -}}
+    {{- $pageImage = . | absURL -}}
+    {{- if not (or (strings.HasPrefix . "http://") (strings.HasPrefix . "https://") (strings.HasPrefix . "/")) -}}
+        {{- with $page.Resources.GetMatch . -}}
+            {{- $resource := . -}}
+            {{- with $page.Params.imageRotation -}}
+                {{- $resource = $resource.Process (printf "r%d" .) -}}
+            {{- end -}}
+            {{- $pageImage = $resource.Permalink -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
+{{- $socialImage := $pageImage -}}
+{{- if not $socialImage -}}
+    {{- with .Site.Params.socialimage -}}
+        {{- $socialImage = . | absURL -}}
+    {{- end -}}
+{{- end -}}
+{{- if and .IsPage (in .Site.Params.mainSections .Section) (not $pageImage) -}}
+    {{- $socialImage = "" -}}
+{{- end -}}
+
+{{- if $isNoindex }}
+<meta name="robots" content="noindex, follow">
+{{- else }}
+<meta name="description" content="{{ $description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:type" content="{{ if and .IsPage (in .Site.Params.mainSections .Section) }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+{{- with $socialImage }}
+<meta property="og:image" content="{{ . }}">
+{{- end }}
+
+<meta name="twitter:card" content="{{ if $socialImage }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{- with $socialImage }}
+<meta name="twitter:image" content="{{ . }}">
+{{- end }}
+
+{{- $authorName := .Site.Params.author.name | default .Site.Title -}}
+{{- $personID := printf "%s#person" .Site.Home.Permalink -}}
+{{- if .IsHome -}}
+    {{- $person := dict "@type" "Person" "@id" $personID "name" $authorName "url" .Site.Home.Permalink -}}
+    {{- $website := dict "@type" "WebSite" "@id" (printf "%s#website" .Site.Home.Permalink) "url" .Site.Home.Permalink "name" .Site.Title "description" $description "publisher" (dict "@id" $personID) -}}
+    {{- dict "@context" "https://schema.org" "@graph" (slice $website $person) | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
+{{- else if and .IsPage (in .Site.Params.mainSections .Section) -}}
+    {{- $article := dict "@context" "https://schema.org" "@type" "BlogPosting" "headline" .Title "description" $description "url" .Permalink "mainEntityOfPage" .Permalink "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00") "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "author" (dict "@type" "Person" "@id" $personID "name" $authorName) -}}
+    {{- with $pageImage -}}
+        {{- $article = merge $article (dict "image" .) -}}
+    {{- end -}}
+    {{- $article | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
+{{- else if or .IsPage .IsBranch -}}
+    {{- $schemaType := cond .IsBranch "CollectionPage" "WebPage" -}}
+    {{- with .Params.schemaType -}}
+        {{- $schemaType = . -}}
+    {{- end -}}
+    {{- dict "@context" "https://schema.org" "@type" $schemaType "name" .Title "description" $description "url" .Permalink | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
+{{- end -}}
+
+{{- if not .IsHome -}}
+    {{- $items := slice -}}
+    {{- range .Ancestors.Reverse -}}
+        {{- if .Permalink -}}
+            {{- $name := .LinkTitle | plainify -}}
+            {{- if not $name -}}
+                {{- $name = $.Site.Title -}}
+            {{- end -}}
+            {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" $name "item" .Permalink) -}}
+        {{- end -}}
+    {{- end -}}
+    {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" (.LinkTitle | plainify) "item" .Permalink) -}}
+    {{- dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
+{{- end -}}
+{{- end }}

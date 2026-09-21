@@ -1,27 +1,74 @@
-/* antpress — 主题切换 + 中文标签 + 滚动到顶部 */
+/* antpress — 主题切换 + 滚动到顶部 */
 
 (function () {
   'use strict';
 
   /* ============================
-   * 暗色切换（prefers-color-scheme + localStorage）
+   * 主题切换（跟随系统 + 用户偏好持久化 + 圆环扩散动画）
    * ============================ */
   var STORAGE_KEY = 'antpress-theme';
   var saved = localStorage.getItem(STORAGE_KEY);
-  if (saved === 'dark' || saved === 'light') {
-    document.documentElement.setAttribute('data-theme', saved);
+  var colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+  var hasSavedTheme = saved === 'dark' || saved === 'light';
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
   }
+
+  setTheme(hasSavedTheme ? saved : (colorScheme.matches ? 'dark' : 'light'));
+
+  colorScheme.addEventListener('change', function (event) {
+    if (!hasSavedTheme) {
+      setTheme(event.matches ? 'dark' : 'light');
+    }
+  });
 
   var btn = document.querySelector('.theme-toggle');
   if (btn) {
-    btn.addEventListener('click', function () {
+    btn.addEventListener('click', function (event) {
       var cur = document.documentElement.getAttribute('data-theme');
-      if (!cur) {
-        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
       var next = cur === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem(STORAGE_KEY, next);
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function applyTheme() {
+        setTheme(next);
+        localStorage.setItem(STORAGE_KEY, next);
+        hasSavedTheme = true;
+      }
+
+      if (!document.startViewTransition || prefersReducedMotion) {
+        applyTheme();
+        return;
+      }
+
+      var rect = btn.getBoundingClientRect();
+      var x = event.detail === 0 ? rect.left + rect.width / 2 : event.clientX;
+      var y = event.detail === 0 ? rect.top + rect.height / 2 : event.clientY;
+      var radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y)
+      );
+      var transition = document.startViewTransition(applyTheme);
+
+      transition.ready.then(function () {
+        var clipPath = [
+          'circle(0 at ' + x + 'px ' + y + 'px)',
+          'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'
+        ];
+        document.documentElement.animate(
+          {
+            clipPath: next === 'dark' ? clipPath.reverse() : clipPath
+          },
+          {
+            duration: 400,
+            easing: 'ease-out',
+            fill: 'forwards',
+            pseudoElement: next === 'dark'
+              ? '::view-transition-old(root)'
+              : '::view-transition-new(root)'
+          }
+        );
+      });
     });
   }
 
@@ -43,28 +90,4 @@
     });
   }
 
-  /* ============================
-   * 中文标签自动添加（antfu 风）
-   * 检测标题含 CJK 字符时显示「中文」小标签
-   * ============================ */
-  function addLangTags() {
-    var items = document.querySelectorAll('.archive-list li');
-    items.forEach(function (li) {
-      var titleEl = li.querySelector('.archive-title');
-      if (!titleEl) return;
-      if (li.querySelector('.lang-tag')) return;
-      var text = titleEl.textContent || '';
-      if (/[一-鿿]/.test(text)) {
-        var tag = document.createElement('span');
-        tag.className = 'lang-tag';
-        tag.textContent = '中文';
-        li.insertBefore(tag, titleEl);
-      }
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', addLangTags);
-  } else {
-    addLangTags();
-  }
 })();
