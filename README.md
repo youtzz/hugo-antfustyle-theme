@@ -1,49 +1,67 @@
 # hugo-antfustyle-theme
 
-> A Hugo theme inspired by [antfu.me](https://antfu.me/).
+[![Demo](https://img.shields.io/badge/demo-GitHub%20Pages-blue?logo=github)](https://youtzz.github.io/hugo-antfustyle-theme/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-复古打字 / 印刷感 / 工程师低调美学。
+A **minimal** Hugo port of [antfu.me](https://antfu.me/) visuals — restrained typewriter / print aesthetic, not a kitchen-sink theme.
 
-## 特性
+> 复古打字机 / 印刷感 / 工程师低调美学。克制移植，不为功能堆料。
 
-- **纯文本紧凑列表**：首页展示最近文章，文章归档按年份分组（年份作为大水印字）
-- **Typewriter 字体**：纯系统字体 fallback（JetBrains Mono → IBM Plex Mono → SF Mono → Menlo），无外部 CDN 依赖
-- **印刷感配色**：off-white `#FAFAF7` 纸面 + 深炭 `#1A1A1A` 文字 + 链接继承文字色（无蓝色强调）
-- **自动暗色**：`prefers-color-scheme` + 手动 sun/moon 切换 + localStorage 持久化
-- **ArtPlum / ArtDots 装饰**：对齐 antfu.me；`[params.art]` 注册表 + `active`/`pool`（可 `extra` 扩展）；尊重 `prefers-reduced-motion`
-- **手绘 `af` logo**：使用 antfu.me 真实 SVG path
-- **星号行 `* * *`**：标志性 antfu 风格分节符号
-- **打印 stylesheet**：自动隐藏导航 / 评论 / 页脚，外链附带 URL
+| | |
+| --- | --- |
+| **Demo** | [youtzz.github.io/hugo-antfustyle-theme](https://youtzz.github.io/hugo-antfustyle-theme/) |
+| **Real use / In production** | [keiwake.com](https://keiwake.com) |
 
-## 安装
+## Features
+
+- **Compact text lists** — home shows recent posts; archive groups by year (large year watermark)
+- **Typewriter fonts** — system fallbacks only (JetBrains Mono → IBM Plex Mono → SF Mono → Menlo); no CDN
+- **Print-like palette** — off-white `#FAFAF7` paper + charcoal `#1A1A1A` text; links inherit text color
+- **Auto dark mode** — `prefers-color-scheme` + sun/moon toggle + `localStorage`
+- **ArtPlum / ArtDots** — `[params.art]` registry + `active` / `pool` (extend via `extra`); respects `prefers-reduced-motion`
+- **Hand-drawn `af` logo** — SVG path from antfu.me (see [Credits](#credits))
+- **Star dividers `* * *`** — antfu-style section breaks
+- **Print stylesheet** — hides nav / comments / footer; appends URLs to external links
+
+## Install
 
 ```bash
-# 作为 Hugo 站点的主题使用
+# Clone into your site's themes directory
 cd /path/to/your-hugo-site/themes
 git clone https://github.com/youtzz/hugo-antfustyle-theme.git hugo-antfustyle-theme
 
-# 在 hugo.toml 中启用
+# Enable in hugo.toml
 echo 'theme = "hugo-antfustyle-theme"' >> hugo.toml
 ```
 
-或者作为 git submodule：
+Or as a git submodule:
 
 ```bash
 git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
 ```
 
-## 配置
+Requires **Hugo Extended** ≥ `0.161.1` (developed against ~0.166.x).
 
-主题通过 `hugo.toml` 的 `[params]` 块配置：
+### Keeping a submodule up to date
+
+```bash
+git -C themes/hugo-antfustyle-theme fetch --tags
+git -C themes/hugo-antfustyle-theme checkout <tag-or-main>
+git add themes/hugo-antfustyle-theme && git commit -m "chore: bump hugo-antfustyle-theme"
+```
+
+## Configuration
+
+Configure via `[params]` in your site `hugo.toml`:
 
 ```toml
 [params]
-  description = "你的站点副标题"
-  homeIntro = "一段支持 **Markdown** 的首页介绍"
-  homeAbout = "一段更完整的自我介绍"
+  description = "Site subtitle"
+  homeIntro = "A short intro; **Markdown** is fine"
+  homeAbout = "A longer about blurb"
   homeRecentCount = 8
-  homeRecentTitle = "最近文章"
-  homeAllPostsLabel = "查看全部文章"
+  homeRecentTitle = "Recent posts"
+  homeAllPostsLabel = "View all posts"
 
   [[params.homeGroups]]
     label = "Writing about"
@@ -54,15 +72,13 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
       name = "Design"
 ```
 
-`homeGroups.items.url` 可省略；没有链接的项目会渲染为普通文本，不会生成假链接。`footerNote` 可用于页脚附加文本。
+Omit `homeGroups.items.url` to render plain text (no fake links). Use `footerNote` for optional footer text.
 
-### 页面装饰（art）
+### Page decoration (`[params.art]`)
 
-主题内置注册表：`plum` → `js/plum.js`，`dots` → `js/dots.js`。Loader **只按注册表**挂载，不硬编码种类。
+Built-in registry: `plum` → `js/plum.js`, `dots` → `js/dots.js`. The loader mounts **only** from the registry.
 
-#### 三种常见用法
-
-只要树枝：
+**Plum only:**
 
 ```toml
 [params.art]
@@ -70,7 +86,7 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
   pool = ["plum", "dots"]
 ```
 
-只要原点：
+**Dots only:**
 
 ```toml
 [params.art]
@@ -78,7 +94,7 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
   pool = ["plum", "dots"]
 ```
 
-在启用列表里随机（每次加载均匀抽取）：
+**Random from pool (uniform each load):**
 
 ```toml
 [params.art]
@@ -86,9 +102,9 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
   pool = ["plum", "dots"]
 ```
 
-`active`：`off` | 已注册 name | `random`。未知 name / 空 `pool` → fail soft 为关闭。主题未配置时默认 `active=plum`（兼容旧站）。
+`active`: `off` | registered name | `random`. Unknown name / empty `pool` → fail soft to off. Unconfigured default: `active=plum`.
 
-#### 自定义 art（extra）
+#### Custom art (`extra`)
 
 ```toml
 [params.art]
@@ -96,80 +112,65 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
   pool = ["plum", "dots", "spark"]
 
 [params.art.extra.spark]
-  # 相对 assets/ 的路径；key 即 name，可进 pool / 被 active 点名
+  # Path relative to assets/; key is the name for pool / active
   script = "js/art-spark.js"
 ```
 
-挂载约定：清空 `.page-decoration` → 建 `canvas#{name}-canvas`（如 `plum-canvas` / `dots-canvas`）→ 只加载对应脚本。
+Mount contract: clear `.page-decoration` → create `canvas#{name}-canvas` → load that script only.
 
-#### 页面覆盖与兼容
+#### Per-page override & compatibility
 
-单页 front matter 只覆盖 `active`：
+Front matter overrides `active` only:
 
 ```yaml
 ---
-title: 某篇文章
+title: Some post
 art: dots
 ---
 ```
 
-向后兼容：旧式 `params.art = "dots"`（字符串）视作 `active`；未写 `pool` 时 pool = 全部内置。
+Legacy `params.art = "dots"` (string) is treated as `active`. Missing `pool` → all built-ins.
 
-`prefers-reduced-motion: reduce` 等价 `off`（不挂载、不下载脚本）。
+`prefers-reduced-motion: reduce` acts as `off` (no mount, no script download).
 
-## 项目级扩展
+## Project-level hooks
 
-主题提供以下可选扩展点：
+Optional extension points (define in your site, not the theme):
 
-- `layouts/partials/custom_head.html`：`head` 相关扩展
-- `layouts/partials/custom_body.html`：页面底部脚本
-- `layouts/partials/hugo-antfustyle-theme/hero-extend.html`：首页补充内容
-- `layouts/partials/hugo-antfustyle-theme/post-extend.html`：文章页补充内容
-- `layouts/partials/hugo-antfustyle-theme/footer-extend.html`：页脚补充内容
-- `assets/custom.css`：项目样式；支持 Hugo template 表达式，主题会压缩并生成指纹
+- `layouts/partials/custom_head.html` — head extras
+- `layouts/partials/custom_body.html` — bottom-of-page scripts
+- `layouts/partials/hugo-antfustyle-theme/hero-extend.html` — home extras
+- `layouts/partials/hugo-antfustyle-theme/post-extend.html` — post extras (e.g. comments)
+- `layouts/partials/hugo-antfustyle-theme/footer-extend.html` — footer extras
+- `layouts/partials/reading-time.html` — override reading-time label (theme ships a default)
+- `assets/custom.css` — project CSS; Hugo template expressions OK; fingerprinted & minified
 
-## 本地验证
-
-仓库内置最小示例站点。在主题仓库根目录运行：
+## Local preview (this repo)
 
 ```bash
-hugo --source exampleSite --themesDir ../..
+mkdir -p exampleSite/themes
+ln -sfn "$(pwd)" exampleSite/themes/hugo-antfustyle-theme
+hugo --source exampleSite --minify
+# or: hugo server --source exampleSite
 ```
 
-## 文件结构
+For local serving, override baseURL if needed:
 
-```
-hugo-antfustyle-theme/
-├── theme.toml                # 主题元数据
-├── LICENSE # MIT
-├── archetypes/
-│   └── default.md            # 新文章默认 front matter
-├── assets/
-│   ├── css/
-│   │   └── main.css          # 主样式（typewriter + 暗色 + print）
-│   └── js/
-│       ├── plum.js           # ArtPlum canvas 算法
-│       ├── dots.js           # ArtDots 原点场（canvas + simplex）
-│       └── theme.js          # 暗色切换 + 回到顶部
-├── layouts/
-│   ├── _default/
-│   │   ├── baseof.html       # 基础骨架
-│   │   ├── list.html         # 列表页（年份水印 + 紧凑列表）
-│   │   ├── single.html       # 文章详情
-│   │   └── terms.html        # 标签 / 分类
-│   ├── partials/hugo-antfustyle-theme/
-│   │   ├── header.html       # 顶部一行（logo + nav + social）
-│   │   └── footer.html       # 页脚 + JS 加载
-│   ├── index.html            # 首页简介 + 最近文章
-│   └── 404.html              # 错误页
-└── exampleSite/              # 最小可构建示例
+```bash
+hugo server --source exampleSite --baseURL http://localhost:1313/
 ```
 
-## 致谢
+## Credits
 
-- 设计灵感 + 算法来源：[antfu.me](https://antfu.me/)
-- 适用于 [Hugo](https://gohugo.io/) 静态站点生成器
+- **Design & algorithms**: [antfu.me](https://antfu.me/) by [Anthony Fu](https://github.com/antfu). Site **code** is MIT; **brand marks, images, and page content** on antfu.me remain under Anthony’s own rights — do not treat them as free for commercial reuse just because this theme is MIT.
+- **Hand-drawn `af` path / art**: the logo SVG path and decoration ideas follow antfu.me. Shipping them in this theme does **not** grant a trademark or brand license. For commercial products, expect to replace the `af` mark and review art provenance yourself.
+- Related Astro inspiration (not a dependency): [lin-stephanie/astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme)
+- Built for [Hugo](https://gohugo.io/) (Extended)
+
+## Contributing
+
+Issues and small PRs welcome. Prefer project-level hooks and `[params.art.extra]` over growing the theme into a kitchen sink. Please keep the visual language restrained.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © keishi

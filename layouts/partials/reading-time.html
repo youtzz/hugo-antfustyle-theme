@@ -1,0 +1,11 @@
+{{- /*
+Default reading-time label for list/single meta.
+Call: {{ partial "reading-time.html" (dict "n" .ReadingTime) }}
+Sites may override this partial project-side.
+*/ -}}
+{{- $n := .n -}}
+{{- if gt $n 0 -}}
+  {{- return printf "%dmin" $n -}}
+{{- else -}}
+  {{- return "1min" -}}
+{{- end -}}
