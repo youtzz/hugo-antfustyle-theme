@@ -18,22 +18,32 @@
     </svg>
 </button>
 
-{{- /* Resolve art mode client-side; load only plum OR dots script. */ -}}
+{{- /* Registry-driven art loader: clear host → #{name}-canvas → load only that script. */ -}}
 <script>
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var host = document.querySelector('.page-decoration');
   if (!host) return;
-  var art = host.getAttribute('data-art') || 'plum';
-  if (art !== 'plum' && art !== 'dots' && art !== 'random') art = 'plum';
-  if (art === 'random') art = Math.random() < 0.5 ? 'plum' : 'dots';
-  var src = art === 'dots' ? host.getAttribute('data-dots-src') : host.getAttribute('data-plum-src');
+  var raw = host.getAttribute('data-art-config');
+  if (!raw) return;
+  var cfg;
+  try { cfg = JSON.parse(raw); } catch (e) { return; }
+  var registry = cfg.registry || {};
+  var pool = Array.isArray(cfg.pool) ? cfg.pool.filter(function (n) {
+    return typeof n === 'string' && registry[n];
+  }) : [];
+  var active = cfg.active || 'off';
+  if (active === 'random') {
+    if (!pool.length) return;
+    active = pool[Math.floor(Math.random() * pool.length)];
+  }
+  if (!active || active === 'off') return;
+  var src = registry[active];
   if (!src) return;
-  host.setAttribute('data-art-active', art);
-  /* clear any leftover nodes so only one decoration runs */
+  host.setAttribute('data-art-active', active);
   host.textContent = '';
   var canvas = document.createElement('canvas');
-  canvas.id = art === 'dots' ? 'dots-canvas' : 'plum-canvas';
+  canvas.id = active + '-canvas';
   host.appendChild(canvas);
   var s = document.createElement('script');
   s.src = src;
