@@ -10,6 +10,15 @@ theme = "hugo-antfustyle-theme"
   homeRecentTitle = "最近文章"
   homeAllPostsLabel = "查看全部文章"
 
+  # 页面装饰：registry + 选择器（见 README「页面装饰」）
+  [params.art]
+    active = "random"          # off | plum | dots | random
+    pool = ["plum", "dots"]
+
+  # 可选：注册自定义 art（docs 示例；需自备 assets 下脚本）
+  # [params.art.extra.spark]
+  #   script = "js/art-spark.js"
+
   [[params.homeGroups]]
     label = "Writing about"
     [[params.homeGroups.items]]

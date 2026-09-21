@@ -18,8 +18,38 @@
     </svg>
 </button>
 
-{{ $plum := resources.Get "js/plum.js" | resources.Minify }}
-<script src="{{ $plum.RelPermalink }}" defer></script>
+{{- /* Registry-driven art loader: clear host → #{name}-canvas → load only that script. */ -}}
+<script>
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var host = document.querySelector('.page-decoration');
+  if (!host) return;
+  var raw = host.getAttribute('data-art-config');
+  if (!raw) return;
+  var cfg;
+  try { cfg = JSON.parse(raw); } catch (e) { return; }
+  var registry = cfg.registry || {};
+  var pool = Array.isArray(cfg.pool) ? cfg.pool.filter(function (n) {
+    return typeof n === 'string' && registry[n];
+  }) : [];
+  var active = cfg.active || 'off';
+  if (active === 'random') {
+    if (!pool.length) return;
+    active = pool[Math.floor(Math.random() * pool.length)];
+  }
+  if (!active || active === 'off') return;
+  var src = registry[active];
+  if (!src) return;
+  host.setAttribute('data-art-active', active);
+  host.textContent = '';
+  var canvas = document.createElement('canvas');
+  canvas.id = active + '-canvas';
+  host.appendChild(canvas);
+  var s = document.createElement('script');
+  s.src = src;
+  document.body.appendChild(s);
+})();
+</script>
 {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
 <script src="{{ $theme.RelPermalink }}" defer></script>
 {{- if .Page.Store.Get "hasPhotoStrip" }}

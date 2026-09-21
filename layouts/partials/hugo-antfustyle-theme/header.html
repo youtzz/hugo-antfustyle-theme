@@ -1,6 +1,57 @@
-<!-- 左侧装饰（ArtPlum canvas） -->
-<div class="page-decoration" aria-hidden="true">
-    <canvas id="plum-canvas"></canvas>
+{{- /* Art decoration: built-in registry + optional params.art.extra; loader uses registry only. */ -}}
+{{- $builtinPaths := dict "plum" "js/plum.js" "dots" "js/dots.js" -}}
+{{- $builtinNames := slice "plum" "dots" -}}
+{{- $artParam := .Site.Params.art -}}
+{{- $active := "plum" -}}
+{{- $pool := $builtinNames -}}
+{{- $extra := dict -}}
+{{- $poolSet := false -}}
+{{- if reflect.IsMap $artParam -}}
+  {{- with index $artParam "active" -}}{{- $active = . -}}{{- end -}}
+  {{- if isset $artParam "pool" -}}
+    {{- $poolSet = true -}}
+    {{- $pool = index $artParam "pool" | default (slice) -}}
+  {{- end -}}
+  {{- with index $artParam "extra" -}}{{- $extra = . -}}{{- end -}}
+{{- else if $artParam -}}
+  {{- /* Backward compat: params.art = "dots" (string) → active; pool = all built-ins */ -}}
+  {{- $active = printf "%v" $artParam -}}
+{{- end -}}
+{{- if not $poolSet -}}
+  {{- $pool = $builtinNames -}}
+{{- end -}}
+{{- /* Page front matter art: overrides active only (off | name | random) */ -}}
+{{- with .Params.art -}}
+  {{- $active = . -}}
+{{- end -}}
+{{- /* Build name → minified script URL registry (builtins + extras) */ -}}
+{{- $registry := dict -}}
+{{- range $name, $path := $builtinPaths -}}
+  {{- with resources.Get $path -}}
+    {{- $min := . | resources.Minify -}}
+    {{- $registry = merge $registry (dict $name $min.RelPermalink) -}}
+  {{- end -}}
+{{- end -}}
+{{- if reflect.IsMap $extra -}}
+  {{- range $name, $spec := $extra -}}
+    {{- $scriptPath := "" -}}
+    {{- if reflect.IsMap $spec -}}
+      {{- $scriptPath = index $spec "script" | default "" -}}
+    {{- else if $spec -}}
+      {{- $scriptPath = printf "%v" $spec -}}
+    {{- end -}}
+    {{- if $scriptPath -}}
+      {{- with resources.Get $scriptPath -}}
+        {{- $min := . | resources.Minify -}}
+        {{- $registry = merge $registry (dict $name $min.RelPermalink) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $artConfig := dict "active" $active "pool" $pool "registry" $registry -}}
+{{- $artJSON := $artConfig | jsonify -}}
+<!-- 页面装饰：registry 驱动；footer loader 只按注册表挂载 -->
+<div class="page-decoration" aria-hidden="true"{{ printf " data-art-config='%s'" $artJSON | safeHTMLAttr }}>
 </div>
 
 <!-- 顶部一行：logo + nav + social -->
