@@ -17,6 +17,17 @@
     {{- $customCSS := . | resources.ExecuteAsTemplate "css/custom.css" $ | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $customCSS.RelPermalink }}" integrity="{{ $customCSS.Data.Integrity }}" crossorigin="anonymous">
     {{- end }}
+    {{/* Sync first-paint theme bootstrap — aligns with assets/js/theme.js (no auto state). */}}
+    <script>
+      (function () {
+        var STORAGE_KEY = 'hugo-antfustyle-theme-theme';
+        var saved = localStorage.getItem(STORAGE_KEY);
+        var theme = (saved === 'dark' || saved === 'light')
+          ? saved
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     {{/* Hook: 项目级 partials/custom_head.html（如字体预加载 / 统计脚本） */}}
     {{- if templates.Exists "_partials/custom_head.html" }}
     {{- partial "custom_head.html" . }}
