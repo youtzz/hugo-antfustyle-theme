@@ -1,0 +1,27 @@
+<footer class="site-footer">
+    {{- with .Site.Params.footerNote }}
+    <p>{{ . | safeHTML }}</p>
+    {{- end }}
+    <p>
+        &copy; {{ now.Format "2006" }} {{ .Site.Title }} &middot;
+        Powered by <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+        Theme <a href="https://github.com/youtzz/hugo-antpress-theme" target="_blank" rel="noopener">antpress</a>
+    </p>
+</footer>
+
+{{/* Hook: 项目级可定义 partials/antpress/footer-extend.html 追加内容（Twikoo / 友链 / 站龄计算等） */}}
+{{- if templates.Exists "partials/antpress/footer-extend.html" }}
+{{- partial "antpress/footer-extend.html" . }}
+{{- end }}
+
+<!-- 滚动到顶部按钮 -->
+<button class="to-top" aria-label="回到顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+        <path d="M12 4l-8 8h5v8h6v-8h5z" fill="currentColor"/>
+    </svg>
+</button>
+
+{{ $plum := resources.Get "js/plum.js" | resources.Minify }}
+<script src="{{ $plum.RelPermalink }}" defer></script>
+{{ $theme := resources.Get "js/theme.js" | resources.Minify }}
+<script src="{{ $theme.RelPermalink }}" defer></script>

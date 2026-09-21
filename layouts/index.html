@@ -1,0 +1,60 @@
+{{ define "main" }}
+
+<div class="home-main">
+    <h1 class="hero-name">{{ .Site.Title }}</h1>
+    <p class="hero-tagline">{{ .Site.Params.description | default "Personal site" }}</p>
+
+    {{- with .Site.Params.homeintro }}
+    <p class="hero-bio">
+        {{ . | markdownify }}
+    </p>
+    {{- end }}
+
+    {{- range .Site.Params.homegroups }}
+    <p class="hero-bio">
+        <span class="hero-bio-label">{{ .label }}</span>
+        {{- range $index, $item := .items }}{{ if $index }}, {{ end }}{{ with $item.url }}<a href="{{ . }}">{{ $item.name }}</a>{{ else }}{{ $item.name }}{{ end }}{{- end }}
+    </p>
+    {{- end }}
+
+    {{- with .Site.Params.homeabout }}
+    <p class="hero-paragraph">
+        {{ . | markdownify }}
+    </p>
+    {{- end }}
+
+    {{- $posts := where .Site.RegularPages "Type" "posts" }}
+    {{- $recentCount := .Site.Params.homerecentcount | default 8 }}
+    {{- $recentPosts := first $recentCount $posts.ByDate.Reverse }}
+    {{- with $recentPosts }}
+    <h2 class="home-list-title">{{ $.Site.Params.homerecenttitle | default "Recent posts" }}</h2>
+    {{- range .GroupByDate "2006" }}
+    <h2 class="archive-year">{{ .Key }}</h2>
+    <ul class="archive-list">
+        {{- range .Pages }}
+        <li>
+            <a class="archive-title" href="{{ .RelPermalink }}">
+                {{ .Title }}
+            </a>
+            <span class="archive-meta">
+                {{ .Date.Format "Jan 2" }} ·
+                {{ if gt .ReadingTime 0 }}{{ .ReadingTime }}min{{ else }}1min{{ end }}
+            </span>
+        </li>
+        {{- end }}
+    </ul>
+    {{- end }}
+
+    <p class="all-posts-link"><a href="{{ "posts/" | relURL }}">{{ $.Site.Params.homeallpostslabel | default "View all posts" }} →</a></p>
+    {{- end }}
+
+    <hr class="stars">
+
+    {{/* Hook: 项目级可定义 partials/antpress/hero-extend.html（Friends / Sponsor / 版权等） */}}
+    {{- if templates.Exists "partials/antpress/hero-extend.html" }}
+    {{- partial "antpress/hero-extend.html" . }}
+    {{- end}}
+
+</div>
+
+{{ end }}

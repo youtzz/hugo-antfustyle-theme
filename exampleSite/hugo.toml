@@ -1,0 +1,24 @@
+baseURL = "https://example.org/"
+locale = "zh-CN"
+title = "Antpress Example"
+theme = "antpress"
+
+[params]
+  description = "一个安静的个人写作空间"
+  homeIntro = "写代码，也记录一路上遇见的人和事。"
+  homeAbout = "这个示例展示 antpress 的首页配置与文章排版。"
+  homeRecentTitle = "最近文章"
+  homeAllPostsLabel = "查看全部文章"
+
+  [[params.homeGroups]]
+    label = "Writing about"
+    [[params.homeGroups.items]]
+      name = "技术"
+      url = "/tags/技术/"
+    [[params.homeGroups.items]]
+      name = "生活"
+
+[[menus.main]]
+  name = "文章"
+  url = "/posts/"
+  weight = 10

@@ -1,0 +1,13 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hugo build artifacts (theme shouldn't ship these, but safety net)
+resources/_gen/
+.hugo_build.lock

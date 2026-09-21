@@ -1,0 +1,36 @@
+{{ define "main" }}
+
+
+<main class="page-main">
+    <h1 class="post-title">{{ .Title }}</h1>
+    {{- if .Description }}
+    <p class="muted">{{ .Description }}</p>
+    {{- end }}
+
+    <hr class="stars">
+
+    {{- $pages := where .Pages "Type" "posts" }}
+    {{- if $pages }}
+    {{- range $pages.GroupByDate "2006" }}
+    <h2 class="archive-year">{{ .Key }}</h2>
+    <ul class="archive-list">
+        {{- range .Pages }}
+        <li>
+            <a class="archive-title" href="{{ .RelPermalink }}">
+                {{ .Title }}
+            </a>
+            <span class="archive-meta">
+                {{ .Date.Format "Jan 2" }} ·
+                {{ if gt .ReadingTime 0 }}{{ .ReadingTime }}min{{ else }}1min{{ end }}
+            </span>
+        </li>
+        {{- end }}
+    </ul>
+    {{- end }}
+    {{- else }}
+    <p class="muted">暂无内容。</p>
+    {{- end }}
+
+</main>
+
+{{ end }}

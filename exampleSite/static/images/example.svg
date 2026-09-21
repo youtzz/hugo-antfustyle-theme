@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" role="img" aria-labelledby="title desc">
+  <title id="title">Antpress example image</title>
+  <desc id="desc">A restrained monochrome branch used by the example article.</desc>
+  <rect width="800" height="400" fill="#f4f4ef"/>
+  <path d="M100 320c160-20 230-170 360-180 90-8 150 45 240-60M320 226c-55-56-92-70-142-76m307-8c24-60 58-95 110-116" fill="none" stroke="#555" stroke-width="5" stroke-linecap="round"/>
+</svg>
