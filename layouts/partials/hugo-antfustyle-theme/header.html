@@ -1,6 +1,15 @@
-<!-- 左侧装饰（ArtPlum canvas） -->
-<div class="page-decoration" aria-hidden="true">
-    <canvas id="plum-canvas"></canvas>
+{{- /* art: page front matter overrides site.Params.art; default plum for backward compat */ -}}
+{{- $art := or .Params.art .Site.Params.art "plum" -}}
+{{- if and (ne $art "plum") (ne $art "dots") (ne $art "random") -}}
+{{- $art = "plum" -}}
+{{- end -}}
+{{- $plum := resources.Get "js/plum.js" | resources.Minify -}}
+{{- $dots := resources.Get "js/dots.js" | resources.Minify -}}
+<!-- 页面装饰：ArtPlum / ArtDots；footer 按 data-art 只挂载其一 -->
+<div class="page-decoration" aria-hidden="true"
+     data-art="{{ $art }}"
+     data-plum-src="{{ $plum.RelPermalink }}"
+     data-dots-src="{{ $dots.RelPermalink }}">
 </div>
 
 <!-- 顶部一行：logo + nav + social -->

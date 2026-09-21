@@ -4,6 +4,8 @@ title = "Hugo Antfustyle Theme Example"
 theme = "hugo-antfustyle-theme"
 
 [params]
+  # plum | dots | random (random = 50/50 each load; page front matter art: overrides)
+  art = "random"
   description = "一个安静的个人写作空间"
   homeIntro = "写代码，也记录一路上遇见的人和事。"
   homeAbout = "这个示例展示 hugo-antfustyle-theme 的首页配置与文章排版。"

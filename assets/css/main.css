@@ -176,7 +176,7 @@ hr.stars::after {
 }
 
 /* ============================
- * 左侧装饰（antfu ArtPlum canvas）
+ * 页面装饰（antfu ArtPlum / ArtDots canvas）
  * ============================ */
 .page-decoration {
     position: fixed;

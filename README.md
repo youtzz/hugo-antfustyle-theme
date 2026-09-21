@@ -10,7 +10,7 @@
 - **Typewriter 字体**：纯系统字体 fallback（JetBrains Mono → IBM Plex Mono → SF Mono → Menlo），无外部 CDN 依赖
 - **印刷感配色**：off-white `#FAFAF7` 纸面 + 深炭 `#1A1A1A` 文字 + 链接继承文字色（无蓝色强调）
 - **自动暗色**：`prefers-color-scheme` + 手动 sun/moon 切换 + localStorage 持久化
-- **ArtPlum canvas 装饰**：移植自 antfu.me 真实的 `ArtPlum.vue` L-system 算法，每次访问随机生成羽毛/枝叶装饰
+- **ArtPlum / ArtDots 装饰**：对齐 antfu.me；`art = "plum" | "dots" | "random"`（random 每次加载 50/50）；尊重 `prefers-reduced-motion`
 - **手绘 `af` logo**：使用 antfu.me 真实 SVG path
 - **星号行 `* * *`**：标志性 antfu 风格分节符号
 - **打印 stylesheet**：自动隐藏导航 / 评论 / 页脚，外链附带 URL
@@ -56,6 +56,29 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
 
 `homeGroups.items.url` 可省略；没有链接的项目会渲染为普通文本，不会生成假链接。`footerNote` 可用于页脚附加文本。
 
+### 页面装饰（art）
+
+```toml
+[params]
+  # 站点默认：plum | dots | random
+  # - plum：羽毛/枝叶（ArtPlum L-system）
+  # - dots：原点漂移场（ArtDots；轻量 canvas，无 pixi）
+  # - random：每次页面加载 50% plum / 50% dots
+  # 主题缺省为 plum（兼容旧站点）；醒石等站可设 random。
+  art = "random"
+```
+
+单页可用 front matter 覆盖站点默认：
+
+```yaml
+---
+title: 某篇文章
+art: dots
+---
+```
+
+`prefers-reduced-motion: reduce` 时两种装饰都不挂载、不下载对应脚本。同时只加载一种脚本（plum **或** dots），不会叠画。
+
 ## 项目级扩展
 
 主题提供以下可选扩展点：
@@ -88,6 +111,7 @@ hugo-antfustyle-theme/
 │   │   └── main.css          # 主样式（typewriter + 暗色 + print）
 │   └── js/
 │       ├── plum.js           # ArtPlum canvas 算法
+│       ├── dots.js           # ArtDots 原点场（canvas + simplex）
 │       └── theme.js          # 暗色切换 + 回到顶部
 ├── layouts/
 │   ├── _default/

@@ -18,8 +18,28 @@
     </svg>
 </button>
 
-{{ $plum := resources.Get "js/plum.js" | resources.Minify }}
-<script src="{{ $plum.RelPermalink }}" defer></script>
+{{- /* Resolve art mode client-side; load only plum OR dots script. */ -}}
+<script>
+(function () {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var host = document.querySelector('.page-decoration');
+  if (!host) return;
+  var art = host.getAttribute('data-art') || 'plum';
+  if (art !== 'plum' && art !== 'dots' && art !== 'random') art = 'plum';
+  if (art === 'random') art = Math.random() < 0.5 ? 'plum' : 'dots';
+  var src = art === 'dots' ? host.getAttribute('data-dots-src') : host.getAttribute('data-plum-src');
+  if (!src) return;
+  host.setAttribute('data-art-active', art);
+  /* clear any leftover nodes so only one decoration runs */
+  host.textContent = '';
+  var canvas = document.createElement('canvas');
+  canvas.id = art === 'dots' ? 'dots-canvas' : 'plum-canvas';
+  host.appendChild(canvas);
+  var s = document.createElement('script');
+  s.src = src;
+  document.body.appendChild(s);
+})();
+</script>
 {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
 <script src="{{ $theme.RelPermalink }}" defer></script>
 {{- if .Page.Store.Get "hasPhotoStrip" }}
