@@ -22,3 +22,7 @@
 <script src="{{ $plum.RelPermalink }}" defer></script>
 {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
 <script src="{{ $theme.RelPermalink }}" defer></script>
+{{- if .Page.Store.Get "hasPhotoStrip" }}
+{{ $photoStrip := resources.Get "js/photo-strip.js" | resources.Minify }}
+<script src="{{ $photoStrip.RelPermalink }}" defer></script>
+{{- end }}
