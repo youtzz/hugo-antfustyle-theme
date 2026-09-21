@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ block "title" . }}{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ .Site.Title }}{{ end }}</title>
-    {{- partial "antpress/seo.html" . }}
+    {{- partial "hugo-antfustyle-theme/seo.html" . }}
     {{- with .Site.Params.favicon }}
     <link rel="icon" href="{{ . }}">
     {{- end }}
@@ -17,21 +17,20 @@
     {{- $customCSS := . | resources.ExecuteAsTemplate "css/custom.css" $ | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $customCSS.RelPermalink }}" integrity="{{ $customCSS.Data.Integrity }}" crossorigin="anonymous">
     {{- end }}
-</head>
-<body>
-    {{- partial "antpress/header.html" . }}
-
     {{/* Hook: 项目级 partials/custom_head.html（如字体预加载 / 统计脚本） */}}
-    {{- if templates.Exists "partials/custom_head.html" }}
+    {{- if templates.Exists "_partials/custom_head.html" }}
     {{- partial "custom_head.html" . }}
     {{- end }}
+</head>
+<body>
+    {{- partial "hugo-antfustyle-theme/header.html" . }}
 
     {{- block "main" . }}{{ end }}
 
-    {{- partial "antpress/footer.html" . }}
+    {{- partial "hugo-antfustyle-theme/footer.html" . }}
 
     {{/* Hook: 项目级 partials/custom_body.html（如 copy code / fancybox / Twikoo 加载器） */}}
-    {{- if templates.Exists "partials/custom_body.html" }}
+    {{- if templates.Exists "_partials/custom_body.html" }}
     {{- partial "custom_body.html" . }}
     {{- end }}
 </body>

@@ -2,7 +2,7 @@
 
 
 <main class="page-main">
-    {{- if and (eq .Section "posts") .Fragments.Headings }}
+    {{- if and (in site.Params.mainSections .Section) .Fragments.Headings }}
     <aside class="post-toc" aria-label="文章目录">
         <span class="post-toc-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="img">
@@ -21,7 +21,7 @@
             {{- if not .Date.IsZero }}
             <p class="post-meta">
                 <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time> ·
-                {{ if gt .ReadingTime 0 }}{{ .ReadingTime }}min{{ else }}1min{{ end }} read
+                {{ partial "reading-time.html" (dict "n" .ReadingTime) }} read
                 {{- with .Params.categories }}
                 {{- range . }}
                 ·
@@ -46,9 +46,9 @@
 
         <hr class="stars">
 
-        {{/* Hook: 项目级可定义 partials/antpress/post-extend.html（如 Twikoo 评论 / Sponsor 等） */}}
-        {{- if templates.Exists "partials/antpress/post-extend.html" }}
-        {{- partial "antpress/post-extend.html" . }}
+        {{/* Hook: 项目级可定义 partials/hugo-antfustyle-theme/post-extend.html（如 Twikoo 评论 / Sponsor 等） */}}
+        {{- if templates.Exists "_partials/hugo-antfustyle-theme/post-extend.html" }}
+        {{- partial "hugo-antfustyle-theme/post-extend.html" . }}
         {{- end }}
     </article>
 </main>

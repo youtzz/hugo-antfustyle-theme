@@ -43,7 +43,7 @@
             </a>
             <span class="archive-meta">
                 {{ .Date.Format "Jan 2" }} ·
-                {{ if gt .ReadingTime 0 }}{{ .ReadingTime }}min{{ else }}1min{{ end }}
+                {{ partial "reading-time.html" (dict "n" .ReadingTime) }}
             </span>
         </li>
         {{- end }}
@@ -55,9 +55,9 @@
 
     <hr class="stars">
 
-    {{/* Hook: 项目级可定义 partials/antpress/hero-extend.html（Friends / Sponsor / 版权等） */}}
-    {{- if templates.Exists "partials/antpress/hero-extend.html" }}
-    {{- partial "antpress/hero-extend.html" . }}
+    {{/* Hook: 项目级可定义 partials/hugo-antfustyle-theme/hero-extend.html（Friends / Sponsor / 版权等） */}}
+    {{- if templates.Exists "_partials/hugo-antfustyle-theme/hero-extend.html" }}
+    {{- partial "hugo-antfustyle-theme/hero-extend.html" . }}
     {{- end}}
 
 </div>
