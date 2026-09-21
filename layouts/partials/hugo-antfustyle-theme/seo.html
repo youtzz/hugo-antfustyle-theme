@@ -1,3 +1,24 @@
+{{- /*
+  SEO / 社交卡片元数据（输出到 <head>）。
+
+  页面角色（pageRole，frontmatter 字段，属于页面内容而非布局）：
+    - pageRole = "content"：内容页，可索引
+    - pageRole = "tool"：工具页（如 /site/、/visitor/），输出 noindex, follow
+
+  未声明 pageRole 的页面（taxonomy / term / 404 等没有 frontmatter 可写），
+  按下列默认规则取值：
+    - /404.html → "tool"
+    - taxonomy / term（.Kind）→ "content"（标签页保留索引）
+    - 其余 → "content"
+
+  声明了 pageRole 的页面，取值必须是 content / tool 之一；写错即构建失败
+  （与记录数据集的契约校验同一个原则：声明与现实不符时不要静默放过——
+  一个拼错的值会让本该 noindex 的工具页悄悄变成可索引）。
+
+  只有 robots meta 受页面角色控制；description / canonical / OG / Twitter /
+  JSON-LD 对所有页面无条件输出——noindex 页面同样输出自指 canonical（Google
+  允许并推荐「noindex + 自指 canonical」），也不再连带砍掉社交卡片与结构化数据。
+*/ -}}
 {{- $description := .Site.Params.description | default "" -}}
 {{- with .Params.description -}}
     {{- $description = . -}}
@@ -15,7 +36,19 @@
     {{- end -}}
 {{- end -}}
 {{- $description = $description | plainify | htmlUnescape | strings.TrimSpace -}}
-{{- $isNoindex := or (eq .RelPermalink "/404.html") (and .IsPage (.Params.hidden | default false)) -}}
+{{- $pageRole := .Params.pageRole | default "" -}}
+{{- if $pageRole -}}
+    {{- if not (in (slice "content" "tool") $pageRole) -}}
+        {{- errorf "seo: %s declares pageRole %q; expected \"content\" or \"tool\"" .RelPermalink $pageRole -}}
+    {{- end -}}
+{{- else -}}
+    {{- if eq .RelPermalink "/404.html" -}}
+        {{- $pageRole = "tool" -}}
+    {{- else -}}
+        {{- $pageRole = "content" -}}
+    {{- end -}}
+{{- end -}}
+{{- $isNoindex := eq $pageRole "tool" -}}
 
 {{- $page := . -}}
 {{- $pageImage := "" -}}
@@ -43,7 +76,7 @@
 
 {{- if $isNoindex }}
 <meta name="robots" content="noindex, follow">
-{{- else }}
+{{- end }}
 <meta name="description" content="{{ $description }}">
 <link rel="canonical" href="{{ .Permalink }}">
 
@@ -97,4 +130,3 @@
     {{- $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" (.LinkTitle | plainify) "item" .Permalink) -}}
     {{- dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $items | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
 {{- end -}}
-{{- end }}
