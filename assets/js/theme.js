@@ -3,6 +3,9 @@
 (function () {
   'use strict';
 
+  /* iOS Safari: enable CSS :active on touch (WebKit requires a touchstart listener) */
+  document.addEventListener('touchstart', function () {}, { passive: true });
+
   /* ============================
    * 主题切换（跟随系统 + 用户偏好持久化 + 圆环扩散动画）
    * ============================ */

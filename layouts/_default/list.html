@@ -16,8 +16,8 @@
     <ul class="archive-list">
         {{- range .Pages }}
         <li>
-            <a class="archive-title" href="{{ .RelPermalink }}">
-                {{ .Title }}
+            <a class="archive-link" href="{{ .RelPermalink }}">
+                <span class="archive-title">{{ .Title }}</span>
             </a>
             <span class="archive-meta">
                 {{ .Date.Format "Jan 2" }} ·
