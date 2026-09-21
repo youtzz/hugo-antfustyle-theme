@@ -15,7 +15,7 @@
   if (!ctx) return;
 
   var SCALE = 200;
-  var LENGTH = 5;
+  var LENGTH = 8;
   var BASE_SPACING = 15;
   var DOT_COLOR = '204,204,204'; /* 0xCCCCCC */
   var TARGET_FPS = 30;
@@ -176,7 +176,7 @@
     if (now - lastFrame < FRAME_MS) return;
     lastFrame = now;
 
-    var t = Date.now() / 10000;
+    var t = Date.now() / 7500;
     ctx.clearRect(0, 0, w, h);
 
     var i, p, rad, len, nx, ny, alpha;
@@ -186,7 +186,7 @@
       len = (noise3D(p.x / SCALE, p.y / SCALE, t * 2) + 0.5) * LENGTH;
       nx = p.x + Math.cos(rad) * len;
       ny = p.y + Math.sin(rad) * len;
-      alpha = (Math.abs(Math.cos(rad)) * 0.8 + 0.2) * p.opacity;
+      alpha = (Math.abs(Math.cos(rad)) * 0.9 + 0.1) * p.opacity;
       ctx.fillStyle = 'rgba(' + DOT_COLOR + ',' + alpha + ')';
       /* 2×2 rect ≈ r=1 circle; cheaper than arc per particle */
       ctx.fillRect(nx - 1, ny - 1, 2, 2);
