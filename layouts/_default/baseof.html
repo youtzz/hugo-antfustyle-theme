@@ -17,7 +17,7 @@
     {{- $customCSS := . | resources.ExecuteAsTemplate "css/custom.css" $ | resources.Minify | resources.Fingerprint }}
     <link rel="stylesheet" href="{{ $customCSS.RelPermalink }}" integrity="{{ $customCSS.Data.Integrity }}" crossorigin="anonymous">
     {{- end }}
-    {{/* Sync first-paint theme bootstrap — aligns with assets/js/theme.js (no auto state). */}}
+    {{/* Sync first-paint theme bootstrap — aligns with assets/js/theme.js + VueUse useDark (auto/empty → prefers-color-scheme). */}}
     <script>
       (function () {
         var STORAGE_KEY = 'hugo-antfustyle-theme-theme';
