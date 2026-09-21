@@ -294,20 +294,27 @@ hr.stars::after {
     z-index: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .home-main > :not(.archive-year),
-    .page-main > :not(.archive-year) {
-        opacity: 0;
+/* 首页签名轻入场 — 只动标题与 bio，其余内容保持静止 */
+@keyframes slide-enter {
+    0% {
         transform: translateY(8px);
-        animation: page-enter .45s ease-out forwards;
+        opacity: 0;
     }
-    .home-main > :nth-child(2),
-    .page-main > :nth-child(2) { animation-delay: .06s; }
-    .home-main > :nth-child(3),
-    .page-main > :nth-child(3) { animation-delay: .12s; }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
-@keyframes page-enter {
-    to { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: no-preference) {
+    .home-main > :is(.hero-name, .hero-tagline, .hero-bio, .hero-paragraph) {
+        opacity: 0;
+        animation: slide-enter 450ms ease-out both 1;
+    }
+
+    .home-main > :is(.hero-tagline, .hero-bio, .hero-paragraph) {
+        animation-delay: 60ms;
+    }
 }
 
 /* ============================
@@ -395,6 +402,7 @@ hr.stars::after {
     color: var(--text-mute);
     opacity: .15;
     letter-spacing: -.03em;
+    pointer-events: none;
 }
 
 /* ============================
