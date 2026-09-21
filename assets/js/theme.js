@@ -7,21 +7,37 @@
   document.addEventListener('touchstart', function () {}, { passive: true });
 
   /* ============================
-   * 主题切换（跟随系统 + 用户偏好持久化 + 圆环扩散动画）
+   * 主题切换（VueUse useDark 语义 + 圆环扩散动画）
+   * storage: light/dark = 锁定；auto / 空 / 非法 = 跟随系统
+   * 切换到与当前系统相同的外观时写回 auto（软覆盖，之后继续跟系统）
    * ============================ */
   var STORAGE_KEY = 'hugo-antfustyle-theme-theme';
-  var saved = localStorage.getItem(STORAGE_KEY);
   var colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
-  var hasSavedTheme = saved === 'dark' || saved === 'light';
 
   function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
   }
 
-  setTheme(hasSavedTheme ? saved : (colorScheme.matches ? 'dark' : 'light'));
+  function isExplicit(value) {
+    return value === 'dark' || value === 'light';
+  }
+
+  function systemTheme() {
+    return colorScheme.matches ? 'dark' : 'light';
+  }
+
+  function resolveTheme(stored) {
+    return isExplicit(stored) ? stored : systemTheme();
+  }
+
+  function readStored() {
+    return localStorage.getItem(STORAGE_KEY);
+  }
+
+  setTheme(resolveTheme(readStored()));
 
   colorScheme.addEventListener('change', function (event) {
-    if (!hasSavedTheme) {
+    if (!isExplicit(readStored())) {
       setTheme(event.matches ? 'dark' : 'light');
     }
   });
@@ -35,8 +51,8 @@
 
       function applyTheme() {
         setTheme(next);
-        localStorage.setItem(STORAGE_KEY, next);
-        hasSavedTheme = true;
+        /* VueUse useDark: match system → store auto; differ → lock light/dark */
+        localStorage.setItem(STORAGE_KEY, next === systemTheme() ? 'auto' : next);
       }
 
       if (!document.startViewTransition || prefersReducedMotion) {
