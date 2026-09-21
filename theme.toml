@@ -1,15 +1,16 @@
 name = "hugo-antfustyle-theme"
 license = "MIT"
 licenselink = "https://github.com/youtzz/hugo-antfustyle-theme/blob/main/LICENSE"
-description = "A Hugo theme inspired by antfu.me — typewriter typography, year-grouped post lists, and a print-like aesthetic."
-homepage = "https://github.com/youtzz/hugo-antfustyle-theme"
-tags = ["blog", "minimal", "personal", "responsive", "dark", "typewriter"]
+description = "A minimal Hugo port of antfu.me visuals — typewriter typography, year-grouped post lists, and a print-like aesthetic."
+homepage = "https://youtzz.github.io/hugo-antfustyle-theme/"
+demosite = "https://youtzz.github.io/hugo-antfustyle-theme/"
+tags = ["blog", "minimal", "personal", "responsive", "dark", "typewriter", "antfu"]
 features = ["year-grouped post lists", "typewriter typography", "print stylesheet", "auto dark mode with manual toggle", "ArtPlum / ArtDots page decoration"]
 min_version = "0.161.1"
 
 [author]
-  name = "Leon"
-  homepage = "https://leonscave.com"
+  name = "keishi"
+  homepage = "https://keiwake.com"
 
 [original]
   name = "Anthony Fu"

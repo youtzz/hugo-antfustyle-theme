@@ -1,33 +1,33 @@
-baseURL = "https://example.org/"
+baseURL = "https://youtzz.github.io/hugo-antfustyle-theme/"
 locale = "zh-CN"
 title = "Hugo Antfustyle Theme Example"
 theme = "hugo-antfustyle-theme"
 
 [params]
-  description = "一个安静的个人写作空间"
-  homeIntro = "写代码，也记录一路上遇见的人和事。"
-  homeAbout = "这个示例展示 hugo-antfustyle-theme 的首页配置与文章排版。"
-  homeRecentTitle = "最近文章"
-  homeAllPostsLabel = "查看全部文章"
+  description = "Minimal Hugo port of antfu.me visuals — sample site"
+  homeIntro = "Example content for [hugo-antfustyle-theme](https://github.com/youtzz/hugo-antfustyle-theme). For a live production site, see **[keiwake.com](https://keiwake.com)**."
+  homeAbout = "This demo stays sample-ish on purpose. Layout, typewriter typography, year-grouped lists, and ArtPlum / ArtDots decorations are what the theme ships."
+  homeRecentTitle = "Recent posts"
+  homeAllPostsLabel = "View all posts"
 
-  # 页面装饰：registry + 选择器（见 README「页面装饰」）
+  # Page decoration: registry + selector (see README)
   [params.art]
     active = "random"          # off | plum | dots | random
     pool = ["plum", "dots"]
 
-  # 可选：注册自定义 art（docs 示例；需自备 assets 下脚本）
+  # Optional: register custom art (needs a script under assets/)
   # [params.art.extra.spark]
   #   script = "js/art-spark.js"
 
   [[params.homeGroups]]
     label = "Writing about"
     [[params.homeGroups.items]]
-      name = "技术"
+      name = "Tech"
       url = "/tags/技术/"
     [[params.homeGroups.items]]
-      name = "生活"
+      name = "Life"
 
 [[menus.main]]
-  name = "文章"
+  name = "Posts"
   url = "/posts/"
   weight = 10
