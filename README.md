@@ -28,7 +28,7 @@ A **minimal** Hugo port of [antfu.me](https://antfu.me/) visuals — restrained 
 
 Copy-paste path for an empty directory. You do **not** need this repo’s `exampleSite` to get a running site.
 
-**Requirements:** Hugo ≥ `0.161.1` (developed against ~0.166.x). Plain Hugo is enough for this theme (plain CSS + minify/fingerprint — no Sass). Install from [gohugo.io](https://gohugo.io/installation/).
+**Requirements:** Hugo ≥ `0.164.0` (developed against ~0.166.x; `theme.toml` `min_version`). Plain Hugo is enough — **Extended is not required** (plain CSS + minify/fingerprint, no Sass). Install from [gohugo.io](https://gohugo.io/installation/).
 
 ### 1. Create a site
 
@@ -114,7 +114,7 @@ git clone https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfus
 echo 'theme = "hugo-antfustyle-theme"' >> hugo.toml
 ```
 
-Requires Hugo ≥ `0.161.1` (developed against ~0.166.x). See [Configuration](#configuration) for params.
+Requires Hugo ≥ `0.164.0` (developed against ~0.166.x; `theme.toml` `min_version`). **Hugo Extended is not required**. See [Configuration](#configuration) for params.
 
 ## Versioning & updates
 
@@ -245,7 +245,8 @@ Optional extension points (define in your site, not the theme):
 - `layouts/partials/custom_body.html` — bottom-of-page scripts
 - `layouts/partials/hugo-antfustyle-theme/brand-logo.html` — replace the default「石」logo via Hugo lookup order
 - `layouts/partials/hugo-antfustyle-theme/hero-extend.html` — home extras
-- `layouts/partials/hugo-antfustyle-theme/post-extend.html` — post extras (e.g. comments)
+- `layouts/partials/hugo-antfustyle-theme/post-body-extend.html` — inside `.post-body` after content (e.g. signature)
+- `layouts/partials/hugo-antfustyle-theme/post-extend.html` — post extras below the body (e.g. comments)
 - `layouts/partials/hugo-antfustyle-theme/footer-extend.html` — footer extras (appends after the default credit)
 - `layouts/partials/hugo-antfustyle-theme/footer.html` — soft-override to replace the entire footer (incl. credit)
 - `layouts/partials/reading-time.html` — override reading-time label (theme ships a default)
@@ -270,7 +271,7 @@ hugo server --source exampleSite --baseURL http://localhost:1313/
 
 - **Visual language / ArtPlum / ArtDots inspiration**: [antfu.me](https://antfu.me/) by [Anthony Fu](https://github.com/antfu). This theme’s **default logo is an Awakestone-style「石」mark**, not antfu’s `af` path. antfu.me’s **brand marks, images, and page content** remain under Anthony’s own rights; do not treat them as free for commercial reuse just because its site code is MIT. Sites can swap the logo via `layouts/partials/hugo-antfustyle-theme/brand-logo.html`.
 - Related Astro inspiration (not a dependency): [lin-stephanie/astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme)
-- Built for [Hugo](https://gohugo.io/) (Extended)
+- Built for [Hugo](https://gohugo.io/) ≥ 0.164.0 (Extended optional)
 
 ## Contributing
 

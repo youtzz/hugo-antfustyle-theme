@@ -6,7 +6,7 @@ homepage = "https://youtzz.github.io/hugo-antfustyle-theme/"
 demosite = "https://youtzz.github.io/hugo-antfustyle-theme/"
 tags = ["blog", "minimal", "personal", "responsive", "dark", "typewriter", "antfu"]
 features = ["year-grouped post lists", "typewriter typography", "print stylesheet", "auto dark mode with manual toggle", "ArtPlum / ArtDots page decoration"]
-min_version = "0.161.1"
+min_version = "0.164.0"
 
 [author]
   name = "keishi"
