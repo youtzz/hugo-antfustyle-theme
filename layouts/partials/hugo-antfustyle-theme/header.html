@@ -56,7 +56,7 @@
 
 <!-- 顶部一行：logo + nav + social -->
 <header class="hero-row">
-    <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ printf "%s首页" .Site.Title }}">
+    <a class="brand" href="{{ .Site.Home.RelPermalink }}" aria-label="{{ printf "%s首页" .Site.Title }}">
         {{- partial "hugo-antfustyle-theme/brand-logo.html" . }}
     </a>
 

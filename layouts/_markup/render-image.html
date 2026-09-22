@@ -1,0 +1,14 @@
+{{- /*
+  Make Markdown images baseURL-aware for GitHub Pages project sites.
+
+  Hugo 0.166+ treats destinations that begin with "/" as host-root absolute
+  (relURL leaves them unchanged). Strip the leading slash, then relURL, so
+  user content like ![…](/images/foo.svg) resolves under baseURL subpaths.
+  Absolute http(s) URLs and page-relative paths are left unchanged.
+*/ -}}
+{{- $dest := .Destination -}}
+{{- $parsed := urls.Parse $dest -}}
+{{- if and (eq $parsed.Scheme "") (strings.HasPrefix $dest "/") -}}
+  {{- $dest = strings.TrimPrefix "/" $dest | relURL -}}
+{{- end -}}
+<img src="{{ $dest | safeURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy">
