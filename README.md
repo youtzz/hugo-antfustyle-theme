@@ -19,7 +19,7 @@ A **minimal** Hugo port of [antfu.me](https://antfu.me/) visuals — restrained 
 - **Print-like palette** — off-white `#FAFAF7` paper + charcoal `#1A1A1A` text; links inherit text color
 - **Auto dark mode** — `prefers-color-scheme` + sun/moon toggle + `localStorage`
 - **ArtPlum / ArtDots** — `[params.art]` registry + `active` / `pool` (extend via `extra`); respects `prefers-reduced-motion`
-- **Neutral geometric logo** — site/window mark using `currentColor`, with a documented project override
+- **Awakestone-style「石」logo** — default brand mark (醒石 / Awakestone); replace via documented project override
 - **Star dividers `* * *`** — antfu-style section breaks
 - **Print stylesheet** — hides nav / comments / footer; appends URLs to external links
 
@@ -139,7 +139,7 @@ Optional extension points (define in your site, not the theme):
 
 - `layouts/partials/custom_head.html` — head extras
 - `layouts/partials/custom_body.html` — bottom-of-page scripts
-- `layouts/partials/hugo-antfustyle-theme/brand-logo.html` — replace the neutral default logo via Hugo lookup order
+- `layouts/partials/hugo-antfustyle-theme/brand-logo.html` — replace the default「石」logo via Hugo lookup order
 - `layouts/partials/hugo-antfustyle-theme/hero-extend.html` — home extras
 - `layouts/partials/hugo-antfustyle-theme/post-extend.html` — post extras (e.g. comments)
 - `layouts/partials/hugo-antfustyle-theme/footer-extend.html` — footer extras
@@ -163,7 +163,7 @@ hugo server --source exampleSite --baseURL http://localhost:1313/
 
 ## Credits
 
-- **Visual language / ArtPlum / ArtDots inspiration**: [antfu.me](https://antfu.me/) by [Anthony Fu](https://github.com/antfu). The theme's default geometric logo is neutral and does not use antfu's `af` mark. antfu.me's **brand marks, images, and page content** remain under Anthony’s own rights; do not treat them as free for commercial reuse just because its site code is MIT.
+- **Visual language / ArtPlum / ArtDots inspiration**: [antfu.me](https://antfu.me/) by [Anthony Fu](https://github.com/antfu). This theme’s **default logo is an Awakestone-style「石」mark**, not antfu’s `af` path. antfu.me’s **brand marks, images, and page content** remain under Anthony’s own rights; do not treat them as free for commercial reuse just because its site code is MIT. Sites can swap the logo via `layouts/partials/hugo-antfustyle-theme/brand-logo.html`.
 - Related Astro inspiration (not a dependency): [lin-stephanie/astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme)
 - Built for [Hugo](https://gohugo.io/) (Extended)
 
