@@ -124,7 +124,6 @@ git add themes/hugo-antfustyle-theme && git commit -m "chore: bump hugo-antfusty
 ```
 
 ## Configuration
-## Configuration
 
 Configure via `[params]` in your site `hugo.toml`:
 
