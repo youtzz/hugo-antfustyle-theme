@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-<div class="home-main">
+<main class="home-main">
     <h1 class="hero-name">{{ .Site.Title }}</h1>
     <p class="hero-tagline">{{ .Site.Params.description | default "Personal site" }}</p>
 
@@ -68,6 +68,6 @@
     {{- partial "hugo-antfustyle-theme/hero-extend.html" . }}
     {{- end}}
 
-</div>
+</main>
 
 {{ end }}
