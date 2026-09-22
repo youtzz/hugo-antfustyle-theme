@@ -22,6 +22,7 @@ A **minimal** Hugo port of [antfu.me](https://antfu.me/) visuals — restrained 
 - **Awakestone-style「石」logo** — default brand mark (醒石 / Awakestone); replace via documented project override
 - **Star dividers `* * *`** — antfu-style section breaks
 - **Print stylesheet** — hides nav / comments / footer; appends URLs to external links
+- **Theme credit** — footer defaults to a muted “Powered by Hugo Antfustyle Theme” line (disable via `themeCredit = false`)
 
 ## Install
 
@@ -73,6 +74,18 @@ Configure via `[params]` in your site `hugo.toml`:
 ```
 
 Omit `homeGroups.items.url` to render plain text (no fake links). Use `footerNote` for optional footer text.
+
+### Theme credit (`themeCredit`)
+
+The footer shows a muted **Powered by [Hugo Antfustyle Theme](https://github.com/youtzz/hugo-antfustyle-theme)** line by default (common practice; not antfu branding).
+
+```toml
+[params]
+  # Omit or true → show credit (default)
+  themeCredit = false   # hide the default credit line
+```
+
+To replace the whole footer (or credit copy), soft-override `layouts/partials/hugo-antfustyle-theme/footer.html` in your site. To append extras without removing the credit, use `footer-extend.html` (see Project-level hooks).
 
 ### Page decoration (`[params.art]`)
 
@@ -142,7 +155,8 @@ Optional extension points (define in your site, not the theme):
 - `layouts/partials/hugo-antfustyle-theme/brand-logo.html` — replace the default「石」logo via Hugo lookup order
 - `layouts/partials/hugo-antfustyle-theme/hero-extend.html` — home extras
 - `layouts/partials/hugo-antfustyle-theme/post-extend.html` — post extras (e.g. comments)
-- `layouts/partials/hugo-antfustyle-theme/footer-extend.html` — footer extras
+- `layouts/partials/hugo-antfustyle-theme/footer-extend.html` — footer extras (appends after the default credit)
+- `layouts/partials/hugo-antfustyle-theme/footer.html` — soft-override to replace the entire footer (incl. credit)
 - `layouts/partials/reading-time.html` — override reading-time label (theme ships a default)
 - `assets/custom.css` — project CSS; Hugo template expressions OK; fingerprinted & minified
 
