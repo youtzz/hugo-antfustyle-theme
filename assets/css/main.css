@@ -288,11 +288,12 @@ hr.stars::after {
         text-decoration: none;
     }
 }
-/* ponytail: bluesky 链接容器 16×16，复刻"未配链接"span 时的紧凑布局；点击区 16×16 偏小，移动端若需大点击区，统一所有 social icon 改成 24×24 + gap:0。 */
+/* ponytail: bluesky 链接容器 16×16，复刻"未配链接"span 时的紧凑布局；图标仍按 16×16 绘制。桌面端相邻图标间距 11.2px，把可点盒撑到 24×24、负 margin 抵消占位即可满足 WCAG 2.5.8 最小触摸目标，且不重排（见 ≤720px 覆盖）。 */
 .hero-row .hero-social a[title="Bluesky"] {
-    flex: 0 0 16px;
-    width: 16px;
-    height: 16px;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    margin: -4px;
 }
 .hero-row .hero-social svg {
     width: 16px;
@@ -759,6 +760,8 @@ hr.stars::after {
     }
     .hero-row .hero-nav { gap: .5rem; margin-left: auto; font-size: .9em; }
     .hero-row .hero-social { gap: 0; margin-left: 0; }
+    /* gap:0 时负 margin 会让相邻可点盒重叠、被 axe 判为遮挡；改为真实占位 24px（图标仍是 14px，只是可点盒变大）。 */
+    .hero-row .hero-social a[title="Bluesky"] { margin: 0; }
     .hero-row .hero-social svg { width: 14px; height: 14px; }   /* 16→14 给 nowrap 留余地 */
     .home-main { padding: 0 1rem 1.5rem; }   /* 收紧底部，避免与 footer 间距叠加 */
     .page-main { padding: 0 1rem 1.5rem; }
