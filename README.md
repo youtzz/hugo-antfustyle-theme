@@ -42,12 +42,30 @@ git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hug
 
 Requires **Hugo Extended** ≥ `0.161.1` (developed against ~0.166.x).
 
-### Keeping a submodule up to date
+## Versioning & updates
+
+This theme follows a **rolling `main`** model for now (no release tags yet). Track `main` tip for the latest, or **pin a commit SHA** when you need a frozen tree.
+
+### Submodule
 
 ```bash
-git -C themes/hugo-antfustyle-theme fetch --tags
-git -C themes/hugo-antfustyle-theme checkout <tag-or-main>
-git add themes/hugo-antfustyle-theme && git commit -m "chore: bump hugo-antfustyle-theme"
+git -C themes/hugo-antfustyle-theme fetch origin
+git -C themes/hugo-antfustyle-theme checkout main
+git -C themes/hugo-antfustyle-theme pull --ff-only origin main
+# pin instead of tip:
+# git -C themes/hugo-antfustyle-theme checkout <commit-sha>
+git add themes/hugo-antfustyle-theme
+git commit -m "chore: bump hugo-antfustyle-theme"
+```
+
+Note: `checkout main` alone may leave a stale local `main` unchanged; the `pull --ff-only` (or explicit `checkout <sha>`) is what advances the pin. Prefer that over `git submodule update --remote` unless you have configured the submodule to track `main`.
+
+### Plain clone
+
+```bash
+git -C themes/hugo-antfustyle-theme pull --ff-only origin main
+# or pin:
+# git -C themes/hugo-antfustyle-theme fetch origin && git -C themes/hugo-antfustyle-theme checkout <commit-sha>
 ```
 
 ## Configuration
