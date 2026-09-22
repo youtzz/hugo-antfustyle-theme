@@ -57,7 +57,12 @@
 <!-- 顶部一行：logo + nav + social -->
 <header class="hero-row">
     <a class="brand" href="{{ .Site.Home.RelPermalink }}" aria-label="{{ printf "%s首页" .Site.Title }}">
+        {{- /* Hook: 项目级可定义 _partials/brand-logo.html 覆盖品牌印章；未定义时回退主题默认 */}}
+        {{- if templates.Exists "_partials/brand-logo.html" }}
+        {{- partial "brand-logo.html" . }}
+        {{- else }}
         {{- partial "hugo-antfustyle-theme/brand-logo.html" . }}
+        {{- end }}
     </a>
 
     {{- with .Site.Menus.main }}

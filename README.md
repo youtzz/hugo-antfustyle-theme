@@ -243,7 +243,7 @@ Optional extension points (define in your site, not the theme):
 
 - `layouts/partials/custom_head.html` — head extras
 - `layouts/partials/custom_body.html` — bottom-of-page scripts
-- `layouts/partials/hugo-antfustyle-theme/brand-logo.html` — replace the default「石」logo via Hugo lookup order
+- `layouts/partials/brand-logo.html` — replace the built-in brand logo (explicit hook, checked with `templates.Exists`; the theme renders its own default when absent)
 - `layouts/partials/hugo-antfustyle-theme/hero-extend.html` — home extras
 - `layouts/partials/hugo-antfustyle-theme/post-body-extend.html` — inside `.post-body` after content (e.g. signature)
 - `layouts/partials/hugo-antfustyle-theme/post-extend.html` — post extras below the body (e.g. comments)
@@ -269,7 +269,7 @@ hugo server --source exampleSite --baseURL http://localhost:1313/
 
 ## Credits
 
-- **Visual language / ArtPlum / ArtDots inspiration**: [antfu.me](https://antfu.me/) by [Anthony Fu](https://github.com/antfu). This theme’s **default logo is an Awakestone-style「石」mark**, not antfu’s `af` path. antfu.me’s **brand marks, images, and page content** remain under Anthony’s own rights; do not treat them as free for commercial reuse just because its site code is MIT. Sites can swap the logo via `layouts/partials/hugo-antfustyle-theme/brand-logo.html`.
+- **Visual language / ArtPlum / ArtDots inspiration**: [antfu.me](https://antfu.me/) by [Anthony Fu](https://github.com/antfu). This theme’s **default logo is an Awakestone-style「石」mark**, not antfu’s `af` path. antfu.me’s **brand marks, images, and page content** remain under Anthony’s own rights; do not treat them as free for commercial reuse just because its site code is MIT. Sites can swap the logo via the `layouts/partials/brand-logo.html` hook (see Project-level hooks).
 - Related Astro inspiration (not a dependency): [lin-stephanie/astro-antfustyle-theme](https://github.com/lin-stephanie/astro-antfustyle-theme)
 - Built for [Hugo](https://gohugo.io/) ≥ 0.164.0 (Extended optional)
 
