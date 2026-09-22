@@ -10,6 +10,9 @@ theme = "hugo-antfustyle-theme"
   homeRecentTitle = "Recent posts"
   homeAllPostsLabel = "View all posts"
 
+  # Theme credit in footer (default: on). Set false to hide.
+  # themeCredit = false
+
   # Page decoration: registry + selector (see README)
   [params.art]
     active = "random"          # off | plum | dots | random
