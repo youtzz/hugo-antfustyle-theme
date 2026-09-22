@@ -13,7 +13,15 @@
     {{- range .Site.Params.homegroups }}
     <p class="hero-bio">
         <span class="hero-bio-label">{{ .label }}</span>
-        {{- range $index, $item := .items }}{{ if $index }}, {{ end }}{{ with $item.url }}<a href="{{ . }}">{{ $item.name }}</a>{{ else }}{{ $item.name }}{{ end }}{{- end }}
+        {{- range $index, $item := .items }}{{ if $index }}, {{ end }}{{- with $item.url -}}
+        {{- $parsed := urls.Parse . -}}
+        {{- if $parsed.IsAbs -}}
+        <a href="{{ . }}">{{ $item.name }}</a>
+        {{- else -}}
+        {{/* Hugo 0.166+: leading "/" is host-root; strip then relURL for project baseURL */}}
+        <a href="{{ strings.TrimPrefix "/" . | relURL }}">{{ $item.name }}</a>
+        {{- end -}}
+        {{- else -}}{{ $item.name }}{{- end -}}{{- end }}
     </p>
     {{- end }}
 
