@@ -23,24 +23,97 @@ A **minimal** Hugo port of [antfu.me](https://antfu.me/) visuals — restrained 
 - **Star dividers `* * *`** — antfu-style section breaks
 - **Print stylesheet** — hides nav / comments / footer; appends URLs to external links
 
-## Install
+## Quick Start (from zero)
+
+Copy-paste path for an empty directory. You do **not** need this repo’s `exampleSite` to get a running site.
+
+**Requirements:** Hugo ≥ `0.161.1` (developed against ~0.166.x). Plain Hugo is enough for this theme (plain CSS + minify/fingerprint — no Sass). Install from [gohugo.io](https://gohugo.io/installation/).
+
+### 1. Create a site
 
 ```bash
-# Clone into your site's themes directory
-cd /path/to/your-hugo-site/themes
-git clone https://github.com/youtzz/hugo-antfustyle-theme.git hugo-antfustyle-theme
+hugo new site my-blog
+cd my-blog
+```
+
+### 2. Add the theme (pick one)
+
+**A. Git submodule** — the site directory must already be a git repo (`git submodule` fails with `fatal: not a git repository` otherwise):
+
+```bash
+git init
+git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
+```
+
+**B. Plain clone** (no git required in the site root):
+
+```bash
+mkdir -p themes
+git clone https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
+```
+
+### 3. Minimal `hugo.toml`
+
+Create or replace `hugo.toml` in the site root:
+
+```toml
+baseURL = "http://localhost:1313/"
+title = "My Blog"
+theme = "hugo-antfustyle-theme"
+
+[params]
+  description = "A short subtitle"
+
+[[menus.main]]
+  name = "Posts"
+  url = "/posts/"
+  weight = 10
+```
+
+### 4. First published post
+
+```bash
+hugo new content posts/hello.md
+```
+
+Edit `content/posts/hello.md` so it is **not** a draft (remove `draft: true`, or set `draft: false`), for example:
+
+```markdown
+---
+title: "Hello"
+date: 2026-09-22
+draft: false
+---
+
+First post with **hugo-antfustyle-theme**.
+```
+
+### 5. Run & build
+
+```bash
+hugo server
+# open http://localhost:1313/
+
+hugo --minify
+# success: site written under public/ with no errors
+```
+
+To preview drafts instead of publishing: `hugo server -D`.
+
+### Already have a Hugo site?
+
+```bash
+# Clone into themes/
+mkdir -p themes
+git clone https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
+# or, from a git-managed site root:
+# git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
 
 # Enable in hugo.toml
 echo 'theme = "hugo-antfustyle-theme"' >> hugo.toml
 ```
 
-Or as a git submodule:
-
-```bash
-git submodule add https://github.com/youtzz/hugo-antfustyle-theme.git themes/hugo-antfustyle-theme
-```
-
-Requires **Hugo Extended** ≥ `0.161.1` (developed against ~0.166.x).
+Requires Hugo ≥ `0.161.1` (developed against ~0.166.x). See [Configuration](#configuration) for params.
 
 ### Keeping a submodule up to date
 
