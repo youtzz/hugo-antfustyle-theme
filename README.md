@@ -166,6 +166,14 @@ Configure via `[params]` in your site `hugo.toml`:
 
 Omit `homeGroups.items.url` to render plain text (no fake links). Use `footerNote` for optional footer text.
 
+Optional icons (omit either to skip that `<link>`):
+
+```toml
+[params]
+  favicon = "/favicon.ico"
+  appleTouchIcon = "/apple-touch-icon.png"
+```
+
 ### Theme credit (`themeCredit`)
 
 The footer shows a muted **Powered by [Hugo Antfustyle Theme](https://github.com/youtzz/hugo-antfustyle-theme)** line by default (common practice; not antfu branding).

@@ -8,6 +8,9 @@
     {{- with .Site.Params.favicon }}
     <link rel="icon" href="{{ . }}">
     {{- end }}
+    {{- with .Site.Params.appleTouchIcon }}
+    <link rel="apple-touch-icon" href="{{ . }}">
+    {{- end }}
     {{- with .OutputFormats.Get "RSS" }}
     <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $.Site.Title }}">
     {{- end }}
