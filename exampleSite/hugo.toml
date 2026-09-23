@@ -5,6 +5,8 @@ theme = "hugo-antfustyle-theme"
 
 [params]
   description = "Minimal Hugo port of antfu.me visuals — sample site"
+  favicon = "/images/example.svg"
+  appleTouchIcon = "/images/example.svg"
   homeIntro = "Example content for [hugo-antfustyle-theme](https://github.com/youtzz/hugo-antfustyle-theme). For a live production site, see **[keiwake.com](https://keiwake.com)**."
   homeAbout = "This demo stays sample-ish on purpose. Layout, typewriter typography, year-grouped lists, and ArtPlum / ArtDots decorations are what the theme ships."
   homeRecentTitle = "Recent posts"
