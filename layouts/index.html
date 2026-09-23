@@ -48,11 +48,11 @@
             {{- end }}
             <a class="archive-link" href="{{ .RelPermalink }}">
                 <span class="archive-title">{{ .Title }}</span>
+                <span class="archive-meta">
+                    {{ .Date.Format "Jan 2" }} ·
+                    {{ partial "reading-time.html" (dict "n" .ReadingTime) }}
+                </span>
             </a>
-            <span class="archive-meta">
-                {{ .Date.Format "Jan 2" }} ·
-                {{ partial "reading-time.html" (dict "n" .ReadingTime) }}
-            </span>
         </li>
         {{- end }}
     </ul>
