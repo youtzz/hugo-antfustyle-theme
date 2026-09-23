@@ -174,6 +174,25 @@ Optional icons (omit either to skip that `<link>`):
   appleTouchIcon = "/apple-touch-icon.png"
 ```
 
+### Social share image
+
+Used for `og:image` / `twitter:image`, and fills `BlogPosting.image` in the
+JSON-LD. Use a 1200×630 image:
+
+```toml
+[params]
+  socialImage = "/social-image.png"
+```
+
+By default a page in `mainSections` **never** falls back to it — its share image
+must be its own (`image` / `cover` / `featuredImage` front matter). Set
+`socialImageFallback = true` to let those pages fall back to the site image too:
+
+```toml
+[params]
+  socialImageFallback = true
+```
+
 ### Theme credit (`themeCredit`)
 
 The footer shows a muted **Powered by [Hugo Antfustyle Theme](https://github.com/youtzz/hugo-antfustyle-theme)** line by default (common practice; not antfu branding).

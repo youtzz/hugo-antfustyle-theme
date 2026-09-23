@@ -70,7 +70,9 @@
         {{- $socialImage = . | absURL -}}
     {{- end -}}
 {{- end -}}
-{{- if and .IsPage (in .Site.Params.mainSections .Section) (not $pageImage) -}}
+{{- /* mainSections pages must own their share image; opt in via params.socialImageFallback
+   to allow the site-wide socialImage as a fallback (see README "Social share image"). */ -}}
+{{- if and .IsPage (in .Site.Params.mainSections .Section) (not $pageImage) (not .Site.Params.socialimagefallback) -}}
     {{- $socialImage = "" -}}
 {{- end -}}
 
@@ -104,7 +106,7 @@
     {{- dict "@context" "https://schema.org" "@graph" (slice $website $person) | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
 {{- else if and .IsPage (in .Site.Params.mainSections .Section) -}}
     {{- $article := dict "@context" "https://schema.org" "@type" "BlogPosting" "headline" .Title "description" $description "url" .Permalink "mainEntityOfPage" .Permalink "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00") "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "author" (dict "@type" "Person" "@id" $personID "name" $authorName) -}}
-    {{- with $pageImage -}}
+    {{- with (or $pageImage $socialImage) -}}
         {{- $article = merge $article (dict "image" .) -}}
     {{- end -}}
     {{- $article | jsonify | safeJS | printf `<script type="application/ld+json">%s</script>` | safeHTML -}}
