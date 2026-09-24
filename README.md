@@ -207,7 +207,7 @@ To replace the whole footer (or credit copy), soft-override `layouts/partials/hu
 
 ### Page decoration (`[params.art]`)
 
-Built-in registry: `plum` → `js/plum.js`, `dots` → `js/dots.js`. The loader mounts **only** from the registry.
+Built-in registry: `plum` → `js/plum.js`, `dots` → `js/dots.js`. The loader mounts **only** from the registry. It waits for `load` / `requestIdleCallback` (2s timeout) before mounting, so the decoration script does not contend with first paint.
 
 **Plum only:**
 

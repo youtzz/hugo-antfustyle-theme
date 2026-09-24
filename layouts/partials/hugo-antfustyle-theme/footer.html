@@ -24,7 +24,8 @@
     </svg>
 </button>
 
-{{- /* Registry-driven art loader: clear host → #{name}-canvas → load only that script. */ -}}
+{{- /* Registry-driven art loader: clear host → #{name}-canvas → load only that script.
+     Soft-start after load/idle so plum/dots JS + canvas work do not contend with FCP/LCP. */ -}}
 <script>
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -46,14 +47,33 @@
   if (!active || active === 'off') return;
   var src = registry[active];
   if (!src) return;
-  host.setAttribute('data-art-active', active);
-  host.textContent = '';
-  var canvas = document.createElement('canvas');
-  canvas.id = active + '-canvas';
-  host.appendChild(canvas);
-  var s = document.createElement('script');
-  s.src = src;
-  document.body.appendChild(s);
+
+  function mount() {
+    if (!document.contains(host)) return;
+    host.setAttribute('data-art-active', active);
+    host.textContent = '';
+    var canvas = document.createElement('canvas');
+    canvas.id = active + '-canvas';
+    host.appendChild(canvas);
+    var s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    document.body.appendChild(s);
+  }
+
+  function schedule() {
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(function () { mount(); }, { timeout: 2000 });
+    } else {
+      setTimeout(mount, 0);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    schedule();
+  } else {
+    window.addEventListener('load', schedule, { once: true });
+  }
 })();
 </script>
 {{ $theme := resources.Get "js/theme.js" | resources.Minify }}
