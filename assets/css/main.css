@@ -448,10 +448,15 @@ hr.stars::after {
     flex-wrap: wrap;
 }
 .archive-list li.has-section-tag { position: relative; }
-/* Hit target is full-row (.archive-link flex:1); visual feedback only on .archive-title text */
+/* Hit target is the whole row: the link is the flex container and both the title
+   and the meta live inside it. Visual feedback stays on .archive-title text only. */
 .archive-link {
     flex: 1;
     min-width: 0;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
     color: var(--text);
 }
 .archive-link:active,
@@ -461,6 +466,8 @@ hr.stars::after {
     opacity: 1;
 }
 .archive-title {
+    flex: 1;
+    min-width: 0;
     color: var(--text);
     transition: transform .12s ease, opacity .12s ease;
 }
