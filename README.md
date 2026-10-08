@@ -174,7 +174,21 @@ Optional icons (omit either to skip that `<link>`):
   appleTouchIcon = "/apple-touch-icon.png"
 ```
 
+### Author (`[params.author]`)
+
+Used in JSON-LD (`Person` on the home page, `BlogPosting.author` on posts):
+
+```toml
+[params.author]
+  name = "Leon"
+  url = "/about/"   # optional; absolute or site-relative. When set, Person/author url uses it.
+```
+
+`name` defaults to the site title when omitted. Without `url`, the home-page Person
+falls back to the site home permalink, and post authors omit `url`.
+
 ### Social share image
+
 
 Used for `og:image` / `twitter:image`, and fills `BlogPosting.image` in the
 JSON-LD. Use a 1200×630 image:
