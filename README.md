@@ -263,9 +263,7 @@ Built-in registry: `plum` → `js/plum.js`, `dots` → `js/dots.js`. The loader 
 
 Mount contract: clear `.page-decoration` → create `canvas#{name}-canvas` → load that script only.
 
-Edge fade: `.page-decoration` gets a CSS radial mask (`radial-gradient(circle, transparent, black)`: transparent centre, visible edges). The built-in `plum` / `dots` bake the same falloff into their own drawing and set `data-art-mask="baked"` on the host, which turns the CSS mask off (a mask on a fixed full-screen layer is extra compositing work on every scroll). A custom script can do the same; otherwise it keeps the CSS mask.
-
-Performance notes for the built-ins: canvas resolution is capped at 1.5× DPR; when `OffscreenCanvas` is available the drawing loop runs in a Web Worker (inline Blob URL, no extra file), falling back to the main thread otherwise (e.g. a CSP that blocks `blob:` workers). `dots` runs at 20 fps and pauses while the page scrolls.
+Performance notes for the built-ins: when `OffscreenCanvas` is available the drawing loop runs in a Web Worker (inline Blob URL, no extra file), falling back to the main thread otherwise (e.g. a CSP that blocks `blob:` workers). `dots` pauses while the page scrolls. Rendering (resolution, frame rate, per-dot alpha) is unchanged from the original.
 
 #### Per-page override & compatibility
 

@@ -8,13 +8,9 @@
  *   主线程只负责尺寸 / 滚动 / 可见性消息。实测主线程 canvas 每次提交合成都要带上画布，
  *   开销和画布像素数成正比；Worker 直接把帧交给合成器，主线程不再为它付费。
  *   不支持或 Worker 起不来（比如 CSP 禁 blob:）时退回主线程，同一套绘制代码。
- * - 画布分辨率最多按 1.5 倍屏（原来封顶 2 倍）。帧率 30 → 20。
- * - 不再每个点拼一次 rgba() 字符串、设一次 fillStyle：透明度量化成 32 档，
- *   同一档的点合成一条 rect path，一帧最多 fill 32 次。
- * - 径向遮罩烤进每个点的透明度：alpha × min(1, 到中心距离 / 中心到最远角距离)，
- *   和原来 CSS mask-image: radial-gradient(circle, transparent, black) 一致；
- *   宿主打上 data-art-mask="baked"，CSS 不再给这层全屏 fixed 元素加 mask。
  * - 页面滚动时暂停，停下 150ms 后继续。
+ * 画面与原实现一致：分辨率封顶 2 倍屏、30fps、每点原样 alpha 与 fillRect，
+ * 径向淡出仍由 .page-decoration 的 CSS mask 负责；
  * 随机数仍在主线程按原顺序取（打乱表 → 每点 opacity），画面逐点对应。
  */
 
@@ -27,7 +23,7 @@
   if (!canvas) return;
 
   var BASE_SPACING = 15;
-  var MAX_DPR = 1.5;
+  var MAX_DPR = 2;
   var SCROLL_IDLE_MS = 150;
   var WORKER_READY_MS = 1500;
 
@@ -37,9 +33,8 @@
     var SCALE = 200;
     var LENGTH = 8;
     var DOT_COLOR = '204,204,204'; /* 0xCCCCCC */
-    var TARGET_FPS = 20;
+    var TARGET_FPS = 30;
     var FRAME_MS = 1000 / TARGET_FPS;
-    var ALPHA_LEVELS = 32;
 
     /* --- compact 3D simplex --- */
     var F3 = 1 / 3;
@@ -119,24 +114,11 @@
     }
 
     var n = 0;
-    var px = new Float32Array(0);
-    var py = new Float32Array(0);
-    var popacity = new Float32Array(0);
-    var drawX = new Float32Array(0);
-    var drawY = new Float32Array(0);
-    var level = new Uint8Array(0);
-    var order = new Uint32Array(0);
-    var counts = new Uint32Array(ALPHA_LEVELS + 1);
-    var starts = new Uint32Array(ALPHA_LEVELS + 1);
-    var levelStyle = [];
-    for (var lv = 0; lv <= ALPHA_LEVELS; lv++) {
-      levelStyle.push('rgba(' + DOT_COLOR + ',' + (lv / ALPHA_LEVELS) + ')');
-    }
+    var px = new Float64Array(0);
+    var py = new Float64Array(0);
+    var popacity = new Float64Array(0);
     var w = 0;
     var h = 0;
-    var cx = 0;
-    var cy = 0;
-    var invR = 0;
     var lastFrame = 0;
     var paused = false;
     var hidden = false;
@@ -148,42 +130,18 @@
     function draw() {
       var t = Date.now() / 7500;
       ctx.clearRect(0, 0, w, h);
-      var i, rad, len, nx, ny, alpha, dx, dy, m, L, sx, sy;
-      for (L = 0; L <= ALPHA_LEVELS; L++) counts[L] = 0;
+      var i, x, y, rad, len, nx, ny, alpha;
       for (i = 0; i < n; i++) {
-        sx = px[i] / SCALE;
-        sy = py[i] / SCALE;
-        rad = (noise3D(sx, sy, t) - 0.5) * 2 * Math.PI;
-        len = (noise3D(sx, sy, t * 2) + 0.5) * LENGTH;
-        nx = px[i] + Math.cos(rad) * len;
-        ny = py[i] + Math.sin(rad) * len;
-        dx = nx - cx;
-        dy = ny - cy;
-        m = Math.sqrt(dx * dx + dy * dy) * invR;
-        if (m > 1) m = 1;
-        alpha = (Math.abs(Math.cos(rad)) * 0.9 + 0.1) * popacity[i] * m;
-        L = Math.round(alpha * ALPHA_LEVELS);
-        drawX[i] = nx - 1;
-        drawY[i] = ny - 1;
-        level[i] = L;
-        counts[L]++;
-      }
-      /* 按档位计数排序，同档的点一条 path 画完；第 0 档完全透明，跳过 */
-      starts[0] = 0;
-      for (L = 1; L <= ALPHA_LEVELS; L++) starts[L] = starts[L - 1] + counts[L - 1];
-      for (i = 0; i < n; i++) order[starts[level[i]]++] = i;
-      var k = counts[0];
-      for (L = 1; L <= ALPHA_LEVELS; L++) {
-        var end = k + counts[L];
-        if (end === k) continue;
-        ctx.beginPath();
-        for (; k < end; k++) {
-          i = order[k];
-          /* 2×2 rect ≈ r=1 circle */
-          ctx.rect(drawX[i], drawY[i], 2, 2);
-        }
-        ctx.fillStyle = levelStyle[L];
-        ctx.fill();
+        x = px[i];
+        y = py[i];
+        rad = (noise3D(x / SCALE, y / SCALE, t) - 0.5) * 2 * Math.PI;
+        len = (noise3D(x / SCALE, y / SCALE, t * 2) + 0.5) * LENGTH;
+        nx = x + Math.cos(rad) * len;
+        ny = y + Math.sin(rad) * len;
+        alpha = (Math.abs(Math.cos(rad)) * 0.9 + 0.1) * popacity[i];
+        ctx.fillStyle = 'rgba(' + DOT_COLOR + ',' + alpha + ')';
+        /* 2×2 rect ≈ r=1 circle; cheaper than arc per particle */
+        ctx.fillRect(nx - 1, ny - 1, 2, 2);
       }
     }
 
@@ -214,10 +172,6 @@
         canvas.width = Math.floor(w * o.dpr);
         canvas.height = Math.floor(h * o.dpr);
         ctx.setTransform(o.dpr, 0, 0, o.dpr, 0, 0);
-        /* radial-gradient(circle, …) 默认 farthest-corner：半径 = 中心到角 */
-        cx = w / 2;
-        cy = h / 2;
-        invR = 1 / Math.sqrt(cx * cx + cy * cy);
         if (o.perm) {
           for (i = 0; i < 512; i++) {
             perm[i] = o.perm[i & 255];
@@ -228,10 +182,6 @@
         py = o.y;
         popacity = o.opacity;
         n = px.length;
-        drawX = new Float32Array(n);
-        drawY = new Float32Array(n);
-        level = new Uint8Array(n);
-        order = new Uint32Array(n);
         kick();
       },
       setPaused: function (v) { paused = v; kick(); },
@@ -308,15 +258,14 @@
       w: w,
       h: h,
       dpr: Math.min(window.devicePixelRatio || 1, MAX_DPR),
-      x: new Float32Array(xs),
-      y: new Float32Array(ys),
-      opacity: new Float32Array(os)
+      x: new Float64Array(xs),
+      y: new Float64Array(ys),
+      opacity: new Float64Array(os)
     };
     if (withPerm) o.perm = permTable;
     return o;
   }
 
-  var host = canvas.parentNode;
   var renderer = null; /* 主线程模式 */
   var worker = null;   /* Worker 模式 */
 
@@ -334,14 +283,9 @@
     }
   }
 
-  function bake() {
-    if (host && host.setAttribute) host.setAttribute('data-art-mask', 'baked');
-  }
-
   function startMainThread() {
     var ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
-    bake();
     renderer = createDotsRenderer(window, canvas, ctx);
     renderer.setup(makeSetup(true));
     wire();
@@ -384,8 +328,7 @@
         return;
       }
       worker = w;
-      bake();
-      var o = makeSetup(true);
+        var o = makeSetup(true);
       o.canvas = off;
       o.type = 'init';
       worker.postMessage(o, [off, o.x.buffer, o.y.buffer, o.opacity.buffer]);
