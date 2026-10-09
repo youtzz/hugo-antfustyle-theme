@@ -14,11 +14,23 @@
     {{- with .OutputFormats.Get "RSS" }}
     <link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $.Site.Title }}">
     {{- end }}
+    {{- /* params.inlineCSS = true：main.css + custom.css 直接内联成 <style>，首屏不再等两个 render-blocking 请求
+         （顺序不变，层叠结果与 <link> 完全一致，无 FOUC）。代价是每页 HTML 多出这两份 CSS、不能跨页缓存。
+         默认 false：保持外链 + Fingerprint + SRI。 */ -}}
+    {{- $inlineCSS := site.Params.inlineCSS | default false }}
     {{ $css := resources.Get "css/main.css" | resources.Minify | resources.Fingerprint }}
+    {{- if $inlineCSS }}
+    <style>{{ $css.Content | safeCSS }}</style>
+    {{- else }}
     <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous">
+    {{- end }}
     {{- with resources.Get "custom.css" }}
     {{- $customCSS := . | resources.ExecuteAsTemplate "css/custom.css" $ | resources.Minify | resources.Fingerprint }}
+    {{- if $inlineCSS }}
+    <style>{{ $customCSS.Content | safeCSS }}</style>
+    {{- else }}
     <link rel="stylesheet" href="{{ $customCSS.RelPermalink }}" integrity="{{ $customCSS.Data.Integrity }}" crossorigin="anonymous">
+    {{- end }}
     {{- end }}
     {{/* Sync first-paint theme bootstrap — aligns with assets/js/theme.js + VueUse useDark (auto/empty → prefers-color-scheme). */}}
     <script>

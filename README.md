@@ -219,6 +219,18 @@ The footer shows a muted **Powered by [Hugo Antfustyle Theme](https://github.com
 
 To replace the whole footer (or credit copy), soft-override `layouts/partials/hugo-antfustyle-theme/footer.html` in your site. To append extras without removing the credit, use `footer-extend.html` (see Project-level hooks).
 
+### Inline CSS (`inlineCSS`)
+
+By default `main.css` and `assets/custom.css` are emitted as fingerprinted `<link>` stylesheets (with SRI), which are render-blocking.
+Set `inlineCSS = true` to emit both as inline `<style>` blocks instead (same order, same cascade): first paint no longer waits on
+two extra requests, at the cost of carrying the CSS in every HTML page (no cross-page caching). Worth it when most visits are a
+single page; keep the default when CSS is large or visitors browse many pages.
+
+```toml
+[params]
+  inlineCSS = true
+```
+
 ### Page decoration (`[params.art]`)
 
 Built-in registry: `plum` → `js/plum.js`, `dots` → `js/dots.js`. The loader mounts **only** from the registry. It waits for `load` / `requestIdleCallback` (2s timeout) before mounting, so the decoration script does not contend with first paint.
