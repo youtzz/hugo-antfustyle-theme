@@ -263,6 +263,8 @@ Built-in registry: `plum` → `js/plum.js`, `dots` → `js/dots.js`. The loader 
 
 Mount contract: clear `.page-decoration` → create `canvas#{name}-canvas` → load that script only.
 
+Performance notes for the built-ins: when `OffscreenCanvas` is available the drawing loop runs in a Web Worker (inline Blob URL, no extra file), falling back to the main thread otherwise (e.g. a CSP that blocks `blob:` workers). `dots` pauses while the page scrolls. Rendering (resolution, frame rate, per-dot alpha) is unchanged from the original.
+
 #### Per-page override & compatibility
 
 Front matter overrides `active` only:
