@@ -186,6 +186,11 @@ hr.stars::after {
     bottom: 0;
     pointer-events: none;
     z-index: -1;
+}
+/* 中间淡出、四周显出的径向遮罩。内置 plum / dots 已把同一遮罩烤进画布并给宿主打上
+ * data-art-mask="baked"，跳过这条：全屏 fixed 层上的 CSS mask 每次滚动/重绘都要整层再合成
+ * （awakestone-blog#116）。自定义 art（params.art.extra）不打标记，仍走 CSS 遮罩。 */
+.page-decoration:not([data-art-mask="baked"]) {
     mask-image: radial-gradient(circle, transparent, black);
     -webkit-mask-image: radial-gradient(circle, transparent, black);
 }
