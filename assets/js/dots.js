@@ -8,7 +8,10 @@
  *   主线程只负责尺寸 / 滚动 / 可见性消息。实测主线程 canvas 每次提交合成都要带上画布，
  *   开销和画布像素数成正比；Worker 直接把帧交给合成器，主线程不再为它付费。
  *   不支持或 Worker 起不来（比如 CSP 禁 blob:）时退回主线程，同一套绘制代码。
- * - 页面滚动时暂停，停下 150ms 后继续。
+ * - 滚动时（awakestone-blog#137）：Worker 模式继续画，只把帧率降到 15fps，动画时间不停，
+ *   停下 150ms 后回到 30fps，没有暂停/突跳；主线程只在滚动开始/结束各发一条消息。
+ *   主线程兜底模式下滚动时仍停帧（避免把 #116 的卡顿带回来），但动画时钟同时冻结，
+ *   恢复时从停下的那一帧接着走，不会跳。
  * 画面与原实现一致：分辨率封顶 2 倍屏、30fps、每点原样 alpha 与 fillRect，
  * 径向淡出仍由 .page-decoration 的 CSS mask 负责；
  * 随机数仍在主线程按原顺序取（打乱表 → 每点 opacity），画面逐点对应。
@@ -35,6 +38,9 @@
     var DOT_COLOR = '204,204,204'; /* 0xCCCCCC */
     var TARGET_FPS = 30;
     var FRAME_MS = 1000 / TARGET_FPS;
+    var SCROLL_FRAME_MS = 1000 / 15;
+    /* 滚动时：Worker 降帧继续画；主线程停帧（时钟冻结） */
+    var pauseOnScroll = typeof scope.document !== 'undefined';
 
     /* --- compact 3D simplex --- */
     var F3 = 1 / 3;
@@ -121,6 +127,9 @@
     var h = 0;
     var lastFrame = 0;
     var paused = false;
+    var scrolling = false;
+    var clockOffset = 0;  /* 冻结期累计时长，保证动画时间连续 */
+    var frozenAt = 0;
     var hidden = false;
     var ticking = false;
     var raf = typeof scope.requestAnimationFrame === 'function'
@@ -128,7 +137,7 @@
       : function (cb) { return scope.setTimeout(function () { cb(Date.now()); }, 16); };
 
     function draw() {
-      var t = Date.now() / 7500;
+      var t = (Date.now() - clockOffset) / 7500;
       ctx.clearRect(0, 0, w, h);
       var i, x, y, rad, len, nx, ny, alpha;
       for (i = 0; i < n; i++) {
@@ -151,7 +160,7 @@
         return;
       }
       raf(loop);
-      if (now - lastFrame < FRAME_MS) return;
+      if (now - lastFrame < (scrolling ? SCROLL_FRAME_MS : FRAME_MS)) return;
       lastFrame = now;
       draw();
     }
@@ -184,7 +193,17 @@
         n = px.length;
         kick();
       },
-      setPaused: function (v) { paused = v; kick(); },
+      setPaused: function (v) {
+        v = !!v;
+        if (pauseOnScroll) {
+          if (v && !paused) frozenAt = Date.now();
+          else if (!v && paused && frozenAt) { clockOffset += Date.now() - frozenAt; frozenAt = 0; }
+          paused = v;
+        } else {
+          scrolling = v;
+        }
+        kick();
+      },
       setHidden: function (v) { hidden = v; kick(); }
     };
   }
@@ -343,7 +362,7 @@
       resizeTimer = setTimeout(function () { send('setup', makeSetup(false)); }, 250);
     });
 
-    /* 滚动期间停帧（画面停在最后一帧），停下 SCROLL_IDLE_MS 后继续 */
+    /* 滚动开始/结束各通知一次：Worker 降帧，主线程兜底停帧（时钟连续） */
     var scrolling = false;
     var scrollTimer = 0;
     window.addEventListener('scroll', function () {
