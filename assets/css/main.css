@@ -593,9 +593,8 @@ hr.stars::after {
     -webkit-overflow-scrolling: touch;
 }
 .photo-strip:focus-visible {
-    /* Bottom edge only — avoid a full inset picture-frame outline. */
+    /* No visible focus ring — keyboard scroll still works via tabindex. */
     outline: none;
-    box-shadow: inset 0 -2px 0 0 var(--text-mute);
 }
 .post-body .photo-strip > figure {
     flex: 0 0 20rem;
