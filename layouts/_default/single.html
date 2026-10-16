@@ -21,7 +21,7 @@
             {{- if not .Date.IsZero }}
             <p class="post-meta">
                 <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time> ·
-                {{ partial "reading-time.html" (dict "n" .ReadingTime) }} read
+                {{ partial "reading-time.html" (dict "n" .ReadingTime) }}
                 {{- with .Params.categories }}
                 {{- range . }}
                 ·
@@ -48,8 +48,6 @@
         {{- if templates.Exists "_partials/hugo-antfustyle-theme/post-body-extend.html" }}
         {{- partial "hugo-antfustyle-theme/post-body-extend.html" . }}
         {{- end }}
-
-        <hr class="stars">
 
         {{/* Hook: 项目级可定义 partials/hugo-antfustyle-theme/post-extend.html（如 Twikoo 评论 / Sponsor 等） */}}
         {{- if templates.Exists "_partials/hugo-antfustyle-theme/post-extend.html" }}
